@@ -79,23 +79,24 @@ public class Utilities {
     }
 
     /**
+     * Check if a Block is of a given Material
+     *
+     * @param block Block to check
+     * @param material Material to check against
+     * @return True if the block is of the given Material, False otherwise
+     */
+    public static boolean is(Block block, Material material) {
+        return block.getType() == material;
+    }
+
+    /**
      * Check if a Block is a Snow Layer
      *
      * @param block Block to check
      * @return True if is a Snow Layer, False otherwise
      */
     public static boolean isSnowLayer(Block block) {
-        return isSnowLayer(block.getType());
-    }
-
-    /**
-     * Check if a Material is a Snow Layer
-     *
-     * @param material Material to check
-     * @return True if is a Snow Layer, False otherwise
-     */
-    public static boolean isSnowLayer(Material material) {
-        return material == Material.SNOW;
+        return is(block, Material.SNOW);
     }
 
     /**
@@ -105,17 +106,7 @@ public class Utilities {
      * @return True if is a Snow Block, False otherwise
      */
     public static boolean isSnowBlock(Block block) {
-        return isSnowBlock(block.getType());
-    }
-
-    /**
-     * Check if a Material is a Snow Block
-     *
-     * @param material Material to check
-     * @return True if is a Snow Block, False otherwise
-     */
-    public static boolean isSnowBlock(Material material) {
-        return material == Material.SNOW_BLOCK;
+        return is(block, Material.SNOW_BLOCK);
     }
 
     /**
@@ -125,7 +116,7 @@ public class Utilities {
      * @return True if is a Snow Layer or a Snow Block, False otherwise
      */
     public static boolean isSnowBlockOrLayer(Block block) {
-        return isSnowBlockOrLayer(block.getType());
+        return isSnowBlock(block) || isSnowLayer(block);
     }
 
     /**
@@ -135,7 +126,7 @@ public class Utilities {
      * @return True if is a Snow Layer or a Snow Block, False otherwise
      */
     public static boolean isSnowBlockOrLayer(Material material) {
-        return isSnowBlock(material) || isSnowLayer(material);
+        return material == Material.SNOW_BLOCK || material == Material.SNOW;
     }
 
     /**
@@ -187,17 +178,7 @@ public class Utilities {
      * @return True if is valid, False otherwise
      */
     public static boolean isValidMaterialForFalling(Block block) {
-        return isValidMaterialForFalling(block.getType());
-    }
-
-    /**
-     * Check if the Material is valid for a Snow Layer to fall
-     *
-     * @param material Material to check
-     * @return True if is valid, False otherwise
-     */
-    public static boolean isValidMaterialForFalling(Material material) {
-        return !material.isAir() && material != Material.WATER && material != Material.LAVA;
+        return !block.getType().isAir() && !is(block, Material.WATER) && !is(block, Material.LAVA);
     }
 
     /**
@@ -207,20 +188,10 @@ public class Utilities {
      * @return True if is valid, False otherwise
      */
     public static boolean isValidMaterial(Block block) {
-        return isValidMaterial(block.getType());
-    }
-
-    /**
-     * Check if the Material is valid for a snow layer to pose
-     *
-     * @param material Material to check
-     * @return True if is valid, False otherwise
-     */
-    public static boolean isValidMaterial(Material material) {
-        return isSnowBlockOrLayer(material) ||
-                (isValidMaterialForFalling(material)
-                && material.isBlock()
-                && material.isSolid());
+        return isSnowBlockOrLayer(block) ||
+                (isValidMaterialForFalling(block)
+                        && block.getType().isBlock()
+                        && block.getType().isSolid());
     }
 
     /**

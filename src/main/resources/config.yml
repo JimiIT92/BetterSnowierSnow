@@ -9,3 +9,7 @@ noMeltInColdBiomes: true
 # If 'noMeltInColdBiomes' is true, this value will be ignored
 # at all in cold biomes
 meltAboveLightLevel: 10
+# Prevent grass from decaying if is snowy
+noSnowyGrassDecay: true
+# Prevent grass from spreading if is snowy
+noSnowyGrassSpread: true

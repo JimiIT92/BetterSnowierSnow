@@ -54,10 +54,10 @@ public class SnowFallingEvent implements Listener {
             FallingBlock fallingBlock = (FallingBlock) entity;
             BlockData fallingBlockData = fallingBlock.getBlockData();
             Material material = fallingBlockData.getMaterial();
-            if(Utilities.isSnowBlock(material)) {
+            if(material == Material.SNOW_BLOCK) {
                 Utilities.dropItemAtEntity(fallingBlock, Material.SNOWBALL, 2);
             }
-            if(Utilities.isSnowLayer(material)) {
+            if(material == Material.SNOW) {
                 Snow snow = (Snow) fallingBlockData;
                 Utilities.increaseSnowLayersAt(fallingBlock.getLocation(), snow.getLayers());
             }

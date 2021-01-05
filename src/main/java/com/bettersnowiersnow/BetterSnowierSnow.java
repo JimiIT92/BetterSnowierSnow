@@ -3,6 +3,8 @@ package com.bettersnowiersnow;
 import com.bettersnowiersnow.config.Settings;
 import com.bettersnowiersnow.event.SnowFallingEvent;
 import com.bettersnowiersnow.event.SnowMeltEvent;
+import com.bettersnowiersnow.event.SnowyGrassDecayEvent;
+import com.bettersnowiersnow.event.SnowyGrassSpreadEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,6 +45,12 @@ public final class BetterSnowierSnow extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         if(Settings.snowGravity) {
             pluginManager.registerEvents(new SnowFallingEvent(), this);
+        }
+        if(Settings.noSnowyGrassDecay) {
+            pluginManager.registerEvents(new SnowyGrassDecayEvent(), this);
+        }
+        if(Settings.noSnowyGrassSpread) {
+            pluginManager.registerEvents(new SnowyGrassSpreadEvent(), this);
         }
         pluginManager.registerEvents(new SnowMeltEvent(), this);
     }

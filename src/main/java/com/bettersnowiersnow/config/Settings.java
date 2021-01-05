@@ -27,6 +27,15 @@ public class Settings {
      * The minimum light level at which the snow will melt
      */
     public static int meltAboveLightLevel;
+    /**
+     * If grass won't decay if is Snowy
+     */
+    public static boolean noSnowyGrassDecay;
+
+    /**
+     * If grass won't spread if is Snowy
+     */
+    public static boolean noSnowyGrassSpread;
 
     /**
      * Load configuration
@@ -35,6 +44,8 @@ public class Settings {
         snowGravity = getBoolean("snowGravity");
         noMeltInColdBiomes = getBoolean("noMeltInColdBiomes");
         meltAboveLightLevel = getInt("meltAboveLightLevel");
+        noSnowyGrassDecay = getBoolean("noSnowyGrassDecay");
+        noSnowyGrassSpread = getBoolean("noSnowyGrassSpread");
     }
 
     /**
