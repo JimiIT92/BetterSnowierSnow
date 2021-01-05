@@ -1,0 +1,11 @@
+# Make snow blocks and layers falling if the block below
+# is removed. Also make snow blocks drop 2 snowballs if
+# broken by falling on a non solid block
+snowGravity: true
+# Make snow not melting in cold biomes
+noMeltInColdBiomes: true
+# The maximum light level at which snow won't melt
+# Setting this to 15 will prevent snow from melting at all
+# If 'noMeltInColdBiomes' is true, this value will be ignored
+# at all in cold biomes
+meltAboveLightLevel: 10
