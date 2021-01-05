@@ -13,3 +13,17 @@ meltAboveLightLevel: 10
 noSnowyGrassDecay: true
 # Prevent grass from spreading if is snowy
 noSnowyGrassSpread: true
+# Add a slowness effect to players walking on snow
+# blocks or snow layers. For layers you can set the
+# minimum amount for which the effect will be applied.
+# For instance, if setting to 2, players walking on
+# a single snow layer won't get the effect.
+# Setting this to 1 will give the effect regardless
+# of how many layers there are.
+# WARNING: this may be memory consuming
+slownessOnSnow: true
+slownessMinLayers: 1
+slownessStrength: 1
+# Prevent slowness effect (if active) from being applied
+# if the player is sneaking
+slownessSneakingPrevent: false

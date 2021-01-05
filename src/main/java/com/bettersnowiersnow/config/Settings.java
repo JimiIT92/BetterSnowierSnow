@@ -36,6 +36,24 @@ public class Settings {
      * If grass won't spread if is Snowy
      */
     public static boolean noSnowyGrassSpread;
+    /**
+     * If Players will get the Slowness effect on snow blocks or snow layers
+     */
+    public static boolean slownessOnSnow;
+    /**
+     * Minimum amount of snow layers for which Players won't get
+     * the Slowness effect (if active)
+     */
+    public static int slownessMinLayers;
+    /**
+     * Slowness Effect strength (if active)
+     */
+    public static int slownessStrength;
+    /**
+     * If the Slowness Effect (if active) won't be applied
+     * if the Player is sneaking
+     */
+    public static boolean slownessSneakingPrevent;
 
     /**
      * Load configuration
@@ -46,6 +64,10 @@ public class Settings {
         meltAboveLightLevel = getInt("meltAboveLightLevel");
         noSnowyGrassDecay = getBoolean("noSnowyGrassDecay");
         noSnowyGrassSpread = getBoolean("noSnowyGrassSpread");
+        slownessOnSnow = getBoolean("slownessOnSnow");
+        slownessMinLayers = getInt("slownessMinLayers");
+        slownessStrength = getInt("slownessStrength");
+        slownessSneakingPrevent = getBoolean("slownessSneakingPrevent");
     }
 
     /**

@@ -12,6 +12,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -302,5 +303,15 @@ public class Utilities {
                 }
             }
         }
+    }
+
+    /**
+     * Get the Block the Player is standing on
+     *
+     * @param player Player
+     * @return Player ground Block
+     */
+    public static Block getPlayerGroundBlock(Player player) {
+        return getRelativeBlock(player.getLocation().getBlock(), BlockFace.DOWN);
     }
 }
