@@ -2,6 +2,9 @@ package com.bettersnowiersnow.config;
 
 import com.bettersnowiersnow.BetterSnowierSnow;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.List;
 
 /**
  * Plugin Settings
@@ -31,7 +34,6 @@ public class Settings {
      * If grass won't decay if is Snowy
      */
     public static boolean noSnowyGrassDecay;
-
     /**
      * If grass won't spread if is Snowy
      */
@@ -54,6 +56,26 @@ public class Settings {
      * if the Player is sneaking
      */
     public static boolean slownessSneakingPrevent;
+    /**
+     * The chance of snow to be posed
+     */
+    public static double snowChancePercentage;
+    /**
+     * How often the plugin will try to pose the snow
+     */
+    public static int snowPoseFrequency;
+    /**
+     * Worlds where snow will be posed by strategies
+     */
+    public static List<String> snowPoseWorlds;
+    /**
+     * The maximum amount of snow layers that can be posed from snowing
+     */
+    public static int snowPoseMaxLayers;
+    /**
+     * Snow Pose Task
+     */
+    public static BukkitTask snowPoseTask;
 
     /**
      * Load configuration
@@ -68,6 +90,10 @@ public class Settings {
         slownessMinLayers = getInt("slownessMinLayers");
         slownessStrength = getInt("slownessStrength");
         slownessSneakingPrevent = getBoolean("slownessSneakingPrevent");
+        snowChancePercentage = getDouble("snowChancePercentage");
+        snowPoseFrequency = getInt("snowPoseFrequency");
+        snowPoseWorlds = getStringList("snowPoseWorlds");
+        snowPoseMaxLayers = getInt("snowPoseMaxLayers");
     }
 
     /**
@@ -88,5 +114,35 @@ public class Settings {
      */
     private static int getInt(String key) {
         return CONFIG.getInt(key);
+    }
+
+    /**
+     * Get a double value from the Configuration
+     *
+     * @param key Config Key
+     * @return Double Value
+     */
+    private static double getDouble(String key) {
+        return CONFIG.getDouble(key);
+    }
+
+    /**
+     * Get a string value from the Configuration
+     *
+     * @param key Config Key
+     * @return String Value
+     */
+    private static String getString(String key) {
+        return CONFIG.getString(key);
+    }
+
+    /**
+     * Get a string list value from the Configuration
+     *
+     * @param key Config Key
+     * @return String value
+     */
+    private static List<String> getStringList(String key) {
+        return CONFIG.getStringList(key);
     }
 }

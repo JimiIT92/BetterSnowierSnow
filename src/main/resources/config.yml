@@ -13,6 +13,29 @@ meltAboveLightLevel: 10
 noSnowyGrassDecay: true
 # Prevent grass from spreading if is snowy
 noSnowyGrassSpread: true
+# The rate at which the snow could pose.
+# If set to 1, snow posing will be every x ticks,
+# where x is the amount of ticks specified by the
+# 'snowPoseFrequency' setting.
+# Minecraft default chance is 1/16.
+# WARNING: setting this to a high value
+# may be memory consuming and cause lag
+snowChancePercentage: 0.0625
+# How often the snow could pose.
+# Higher values will make it slower.
+# Lower values will make it faster.
+# WARNING: setting this to a really lower value
+# may be memory consuming and cause lag
+snowPoseFrequency: 20
+# The maximum amount of snow layers
+# that can be naturally posed by snowing
+snowPoseMaxLayers: 8
+# List of worlds where the snow pose will have effect.
+# This is valid only for snow being posed by snowing,
+# other settings, such as the "slowness on walking" are unaffected
+# and will work in any world regardless of this list
+snowPoseWorlds:
+  - world
 # Add a slowness effect to players walking on snow
 # blocks or snow layers. For layers you can set the
 # minimum amount for which the effect will be applied.

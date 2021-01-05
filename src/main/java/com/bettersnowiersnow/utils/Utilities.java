@@ -2,24 +2,27 @@ package com.bettersnowiersnow.utils;
 
 import com.bettersnowiersnow.BetterSnowierSnow;
 import com.bettersnowiersnow.config.Settings;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
+import org.bukkit.block.data.type.Stairs;
+import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Plugin Utility functions
@@ -28,6 +31,10 @@ import java.util.logging.Logger;
  */
 public class Utilities {
 
+    /**
+     * Random Instance
+     */
+    public static final Random RANDOM = new Random(System.currentTimeMillis());
     /**
      * Plugin Instance
      */
@@ -88,6 +95,16 @@ public class Utilities {
      */
     public static boolean is(Block block, Material material) {
         return block.getType() == material;
+    }
+
+    /**
+     * Check if a Block is Air
+     *
+     * @param block Block to check
+     * @return True if the Block is Air, False otherwise
+     */
+    public static boolean isAir(Block block) {
+        return block.getType().isAir();
     }
 
     /**
@@ -179,7 +196,100 @@ public class Utilities {
      * @return True if is valid, False otherwise
      */
     public static boolean isValidMaterialForFalling(Block block) {
-        return !block.getType().isAir() && !is(block, Material.WATER) && !is(block, Material.LAVA);
+        return !block.getType().isAir() && !block.isLiquid() && !Tag.ICE.isTagged(block.getType()) && !is(block, Material.CAULDRON);
+    }
+
+    /**
+     * Check if a Block is a solid full Block
+     *
+     * @param block Block to check
+     * @return True if is a solid full Block, False otherwise
+     */
+    public static boolean isSolidFullBlock(Block block) {
+        Material material = block.getType();
+        return material.isOccluding() || is(block, Material.SCAFFOLDING) ||
+                (material.isSolid() && (
+                    isTopOrDoubleSlab(block)
+                    || isTopStair(block)
+                    || isTopTrapdoor(block)
+                    || (block.getBoundingBox().getVolume() == 1.0D && !isSlab(block)
+                            && !is(block, Material.HOPPER)
+                            && !isStair(block) && !isTrapdoor(block)
+                            && (material.isBlock() && !block.isLiquid() && !block.isPassable())
+                    )
+                ));
+    }
+
+    /**
+     * Check if the Block is a Top or Double Slab
+     *
+     * @param block Block to check
+     * @return True if is a Top or Double Slab, False otherwise
+     */
+    private static boolean isTopOrDoubleSlab(Block block) {
+        if(isSlab(block)) {
+            Slab slab = cast(block);
+            return slab.getType() == Slab.Type.TOP || slab.getType() == Slab.Type.DOUBLE;
+        }
+        return false;
+    }
+
+    /**
+     * Check if a Block is a Top Stair
+     *
+     * @param block Block to check
+     * @return True if is a Top Stair, False otherwise
+     */
+    private static boolean isTopStair(Block block) {
+        if(isStair(block)) {
+            Stairs stairs = cast(block);
+            return stairs.getHalf() ==Bisected.Half.TOP;
+        }
+        return false;
+    }
+
+    /**
+     * Check if a Block is a Top Trapdoor
+     *
+     * @param block Block to check
+     * @return True if is a Top Trapdoor, False otherwise
+     */
+    private static boolean isTopTrapdoor(Block block) {
+        if(isTrapdoor(block)) {
+            TrapDoor trapDoor = cast(block);
+            return trapDoor.getHalf() == Bisected.Half.TOP;
+        }
+        return false;
+    }
+
+    /**
+     * Check if a Block is a Slab
+     *
+     * @param block Block to check
+     * @return True if the Block is a Slab, False otherwise
+     */
+    private static boolean isSlab(Block block) {
+        return Tag.SLABS.isTagged(block.getType()) || Tag.WOODEN_SLABS.isTagged(block.getType());
+    }
+
+    /**
+     * Check if a Block is a Stair
+     *
+     * @param block Block to check
+     * @return True if the Block is a Stair, False otherwise
+     */
+    private static boolean isStair(Block block) {
+        return Tag.STAIRS.isTagged(block.getType()) || Tag.WOODEN_STAIRS.isTagged(block.getType());
+    }
+
+    /**
+     * Check if a Block is a Trapdoor
+     *
+     * @param block Block to check
+     * @return True if the Block is a Trapdoor, False otherwise
+     */
+    private static boolean isTrapdoor(Block block) {
+        return Tag.TRAPDOORS.isTagged(block.getType()) || Tag.WOODEN_TRAPDOORS.isTagged(block.getType());
     }
 
     /**
@@ -189,10 +299,7 @@ public class Utilities {
      * @return True if is valid, False otherwise
      */
     public static boolean isValidMaterial(Block block) {
-        return isSnowBlockOrLayer(block) ||
-                (isValidMaterialForFalling(block)
-                        && block.getType().isBlock()
-                        && block.getType().isSolid());
+        return isSnowBlockOrLayer(block) || (isValidMaterialForFalling(block) && isSolidFullBlock(block));
     }
 
     /**
@@ -306,6 +413,18 @@ public class Utilities {
     }
 
     /**
+     * Increase the Snow Layers by posing another one
+     *
+     * @param block Block
+     * @param snow Snow
+     */
+    public static void increaseSnowLayersFromPosing(Block block, Snow snow) {
+        snow.setLayers(snow.getLayers() + 1);
+        block.setBlockData(snow);
+        Bukkit.getPluginManager().callEvent(new BlockFormEvent(block, block.getState()));
+    }
+
+    /**
      * Get the Block the Player is standing on
      *
      * @param player Player
@@ -313,5 +432,100 @@ public class Utilities {
      */
     public static Block getPlayerGroundBlock(Player player) {
         return getRelativeBlock(player.getLocation().getBlock(), BlockFace.DOWN);
+    }
+
+    /**
+     * Get the Loaded Chunks for snow pose
+     *
+     * @return Loaded Chunks
+     */
+    public static Set<Chunk> getLoadedChunks() {
+        final int viewDistance = Math.min(Bukkit.getViewDistance(), 7);
+        Set<Chunk> chunkSet = new HashSet<>();
+        Bukkit.getOnlinePlayers().stream()
+                .filter(player -> isValidWorld(player.getWorld()))
+                .map(player -> player.getLocation().getChunk())
+                .forEach(chunk -> {
+                    int chunkX = chunk.getX();
+                    int chunkZ = chunk.getZ();
+                    for (int x = chunkX - viewDistance; x <= chunkX + viewDistance; x++) {
+                        for (int z = chunkZ - viewDistance; z <= chunkZ + viewDistance; z++) {
+                            chunkSet.add(chunk.getWorld().getChunkAt(x, z));
+                        }
+                    }
+                });
+        return chunkSet.stream().filter(Chunk::isLoaded).collect(Collectors.toSet());
+    }
+
+    /**
+     * Check if the World is valid for snow pose strategies
+     *
+     * @param world World
+     * @return True if the World is valid for snow pose strategies, False otherwise
+     */
+    private static boolean isValidWorld(World world) {
+        return Settings.snowPoseWorlds.contains(world.getName())
+                && world.getEnvironment() == World.Environment.NORMAL
+                && world.hasStorm();
+    }
+
+    /**
+     * Check if Snow could be posed
+     *
+     * @return True if snow could be pose, False otherwise
+     */
+    public static boolean shouldPoseSnow() {
+        return RANDOM.nextFloat() <= Settings.snowChancePercentage;
+    }
+
+    /**
+     * Check if a Block is a valid for Snow Layer being posed
+     *
+     * @param block Block to check
+     * @return True if is a valid for Snow Layer being posed, False otherwise
+     */
+    public static boolean isValidBlockForPose(Block block) {
+        boolean isSnowLayer = isInColdBiome(block) && isBelowMinimumLightLevel(block) && is(block, Material.SNOW);
+        if(isSnowLayer) {
+            Snow snow = cast(block);
+            return canMoreLayersBePlaced(snow);
+        }
+        return isAir(block);
+    }
+
+    /**
+     * Check if more layers can be naturally placed
+     *
+     * @param snow Snow
+     * @return True if more layers can be placed, False otherwise
+     */
+    public static boolean canMoreLayersBePlaced(Snow snow) {
+        return snow.getLayers() < Settings.snowPoseMaxLayers;
+    }
+
+    /**
+     * Get a Random Block in a Chunk
+     *
+     * @param chunk Chunk
+     * @return Random Block
+     */
+    public static Block getRandomBlockInChunk(Chunk chunk) {
+        int chunkX = chunk.getX();
+        int chunkZ = chunk.getZ();
+        int blockX = randomRange(chunkX * 16, chunkX * 16 + 16);
+        int blockZ = randomRange(chunkZ * 16, chunkZ * 16 + 16);
+        Block highestBlock = chunk.getWorld().getHighestBlockAt(blockX, blockZ);
+        return Utilities.getRelativeBlock(highestBlock, BlockFace.UP);
+    }
+
+    /**
+     * Get a random number from a range
+     *
+     * @param start Range start
+     * @param end Range end
+     * @return Random number
+     */
+    private static int randomRange(int start, int end) {
+        return start + (int) Math.floor((RANDOM.nextFloat() * (end - start)));
     }
 }
