@@ -1,6 +1,6 @@
 # ❄ BetterSnowierSnow ![https://www.spongepowered.org/](https://img.shields.io/badge/Spigot-1.13+-yellow) ![](https://img.shields.io/badge/Release-1.0-yellow) ![Downloads](https://badges.spiget.org/resources/downloads/Downloads-blue-0.svg)
 
-<p align="center"><img align="center" width=5% height=5% src="logo.png"/></p>
+<p align="center"><img align="center" width=10% height=10% src="logo.png"/></p>
 
 Have you ever felt like snow in Minecraft isn't quite right? Well, fear no more my friend because with this plugin you can make it act more realistically!
 
