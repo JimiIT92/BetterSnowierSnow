@@ -7,7 +7,9 @@ noMeltInColdBiomes: true
 # The maximum light level at which snow won't melt
 # Setting this to 15 will prevent snow from melting at all
 # If 'noMeltInColdBiomes' is true, this value will be ignored
-# at all in cold biomes
+# at all in cold biomes.
+# Negative values will be ignored and 0 will be used as value
+# Values above 15 will be ignored and 15 will be used as value
 meltAboveLightLevel: 10
 # Prevent grass from decaying if is snowy
 noSnowyGrassDecay: true
@@ -18,6 +20,7 @@ noSnowyGrassSpread: true
 # where x is the amount of ticks specified by the
 # 'snowPoseFrequency' setting.
 # Minecraft default chance is 1/16.
+# Setting this to 0 will prevent snow from posing at all.
 # WARNING: setting this to a high value
 # may be memory consuming and cause lag
 snowChancePercentage: 0.0625
@@ -28,14 +31,29 @@ snowChancePercentage: 0.0625
 # may be memory consuming and cause lag
 snowPoseFrequency: 20
 # The maximum amount of snow layers
-# that can be naturally posed by snowing
-snowPoseMaxLayers: 8
+# that can be naturally posed by snowing.
+# Values above 7 will be ignored and 7 will
+# be used as value.
+# Also negative values will be ignored and 0 will
+# be used as value
+snowPoseMaxLayers: 4
+# How many snow layers will be posed per ticks.
+# Negative values will be ignored and 1 will be used as value.
+# Also any value above 256 will be ignored and 256 will be used as value.
+snowPoseBlocks: 1
 # List of worlds where the snow pose will have effect.
 # This is valid only for snow being posed by snowing,
 # other settings, such as the "slowness on walking" are unaffected
 # and will work in any world regardless of this list
 snowPoseWorlds:
   - world
+# List of chunks where snow will not be posed at all.
+# Syntax: x1,z1,x2,z2,true|false - exclude a rectangle region
+# around the diagonal from the chunks set. Last parameter
+# will set if also vanilla snow pose (the first layer) will
+# be canceled in those chunks
+snowPoseIgnoredChunks:
+  - 0,0,0,0,false
 # Add a slowness effect to players walking on snow
 # blocks or snow layers. For layers you can set the
 # minimum amount for which the effect will be applied.
@@ -43,6 +61,10 @@ snowPoseWorlds:
 # a single snow layer won't get the effect.
 # Setting this to 1 will give the effect regardless
 # of how many layers there are.
+# For min layers, negative values will be ignored
+# and 0 will be used as value.
+# For min layers, values above 7 will be ignored
+# and 7 will be used as value.
 # WARNING: this may be memory consuming
 slownessOnSnow: true
 slownessMinLayers: 1
@@ -50,3 +72,5 @@ slownessStrength: 1
 # Prevent slowness effect (if active) from being applied
 # if the player is sneaking
 slownessSneakingPrevent: false
+# Set if use metrics to collect plugin usage informations
+metrics: true

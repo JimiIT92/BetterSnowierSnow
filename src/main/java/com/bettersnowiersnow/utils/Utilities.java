@@ -98,16 +98,6 @@ public class Utilities {
     }
 
     /**
-     * Check if a Block is Air
-     *
-     * @param block Block to check
-     * @return True if the Block is Air, False otherwise
-     */
-    public static boolean isAir(Block block) {
-        return block.getType().isAir();
-    }
-
-    /**
      * Check if a Block is a Snow Layer
      *
      * @param block Block to check
@@ -156,27 +146,6 @@ public class Utilities {
      */
     public static Block getRelativeBlock(Block block, BlockFace face) {
         return block.getRelative(face);
-    }
-
-    /**
-     * Get the relative Block type in the specified direction
-     *
-     * @param block Block
-     * @param face Direction
-     * @return Relative Block Type
-     */
-    public static Material getRelativeBlockType(Block block, BlockFace face) {
-        return getRelativeBlock(block, face).getType();
-    }
-
-    /**
-     * Check if the Block below is valid for a snow layer to pose
-     *
-     * @param block Block to check
-     * @return True if the Block below is valid, False otherwise
-     */
-    public static boolean isValidBlockBelow(Block block) {
-        return isValidMaterial(getRelativeBlock(block, BlockFace.DOWN));
     }
 
     /**
@@ -322,12 +291,10 @@ public class Utilities {
      *
      * @param block Block
      * @param blockData Block Data
-     * @return Falling Block
      */
-    public static FallingBlock createFallingBlock(Block block, BlockData blockData) {
+    public static void createFallingBlock(Block block, BlockData blockData) {
         FallingBlock fallingBlock = block.getWorld().spawnFallingBlock(block.getLocation().add(0.5D, 0.0D, 0.5D), blockData);
         fallingBlock.setDropItem(true);
-        return fallingBlock;
     }
 
     /**
@@ -479,21 +446,6 @@ public class Utilities {
     }
 
     /**
-     * Check if a Block is a valid for Snow Layer being posed
-     *
-     * @param block Block to check
-     * @return True if is a valid for Snow Layer being posed, False otherwise
-     */
-    public static boolean isValidBlockForPose(Block block) {
-        boolean isSnowLayer = isInColdBiome(block) && isBelowMinimumLightLevel(block) && is(block, Material.SNOW);
-        if(isSnowLayer) {
-            Snow snow = cast(block);
-            return canMoreLayersBePlaced(snow);
-        }
-        return isAir(block);
-    }
-
-    /**
      * Check if more layers can be naturally placed
      *
      * @param snow Snow
@@ -504,28 +456,22 @@ public class Utilities {
     }
 
     /**
-     * Get a Random Block in a Chunk
+     * Check if a Chunk is excluded from Vanilla snow posing
      *
-     * @param chunk Chunk
-     * @return Random Block
+     * @param chunk Chunk to check
+     * @return True if the Chunk is excluded, False otherwise
      */
-    public static Block getRandomBlockInChunk(Chunk chunk) {
-        int chunkX = chunk.getX();
-        int chunkZ = chunk.getZ();
-        int blockX = randomRange(chunkX * 16, chunkX * 16 + 16);
-        int blockZ = randomRange(chunkZ * 16, chunkZ * 16 + 16);
-        Block highestBlock = chunk.getWorld().getHighestBlockAt(blockX, blockZ);
-        return Utilities.getRelativeBlock(highestBlock, BlockFace.UP);
+    public static boolean isChunkExcludedForVanilla(Chunk chunk) {
+        return Settings.excludedChunks.stream().filter(c -> c.preventVanilla).anyMatch(c -> c.isInExcludedChunk(chunk));
     }
 
     /**
-     * Get a random number from a range
+     * Check if a Chunk is excluded from snow posing
      *
-     * @param start Range start
-     * @param end Range end
-     * @return Random number
+     * @param chunk Chunk to check
+     * @return True if the Chunk is excluded, False otherwise
      */
-    private static int randomRange(int start, int end) {
-        return start + (int) Math.floor((RANDOM.nextFloat() * (end - start)));
+    public static boolean isChunkExcluded(Chunk chunk) {
+        return Settings.excludedChunks.stream().anyMatch(c -> c.isInExcludedChunk(chunk));
     }
 }

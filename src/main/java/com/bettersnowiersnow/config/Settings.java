@@ -4,7 +4,9 @@ import com.bettersnowiersnow.BetterSnowierSnow;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Plugin Settings
@@ -73,6 +75,18 @@ public class Settings {
      */
     public static int snowPoseMaxLayers;
     /**
+     * How many blocks will be posed per tick
+     */
+    public static int snowPoseBlocks;
+    /**
+     * Chunks where Snow won't pose
+     */
+    public static Set<ExcludedChunk> excludedChunks;
+    /**
+     * If metrics are allowed
+     */
+    public static boolean metrics;
+    /**
      * Snow Pose Task
      */
     public static BukkitTask snowPoseTask;
@@ -83,17 +97,20 @@ public class Settings {
     public static void load() {
         snowGravity = getBoolean("snowGravity");
         noMeltInColdBiomes = getBoolean("noMeltInColdBiomes");
-        meltAboveLightLevel = getInt("meltAboveLightLevel");
+        meltAboveLightLevel = Math.min(Math.max(0, getInt("meltAboveLightLevel")), 15);
         noSnowyGrassDecay = getBoolean("noSnowyGrassDecay");
         noSnowyGrassSpread = getBoolean("noSnowyGrassSpread");
         slownessOnSnow = getBoolean("slownessOnSnow");
-        slownessMinLayers = getInt("slownessMinLayers");
+        slownessMinLayers = Math.min(7, Math.max(0, getInt("slownessMinLayers")));
         slownessStrength = getInt("slownessStrength");
         slownessSneakingPrevent = getBoolean("slownessSneakingPrevent");
         snowChancePercentage = getDouble("snowChancePercentage");
         snowPoseFrequency = getInt("snowPoseFrequency");
         snowPoseWorlds = getStringList("snowPoseWorlds");
-        snowPoseMaxLayers = getInt("snowPoseMaxLayers");
+        snowPoseMaxLayers = Math.min(7, Math.max(0, getInt("snowPoseMaxLayers")));
+        snowPoseBlocks = Math.min(Math.max(0, getInt("snowPoseBlocks")), 256);
+        excludedChunks = getExcludedChunks();
+        metrics = getBoolean("metrics");
     }
 
     /**
@@ -127,16 +144,6 @@ public class Settings {
     }
 
     /**
-     * Get a string value from the Configuration
-     *
-     * @param key Config Key
-     * @return String Value
-     */
-    private static String getString(String key) {
-        return CONFIG.getString(key);
-    }
-
-    /**
      * Get a string list value from the Configuration
      *
      * @param key Config Key
@@ -144,5 +151,24 @@ public class Settings {
      */
     private static List<String> getStringList(String key) {
         return CONFIG.getStringList(key);
+    }
+
+    /**
+     * Get the List of Excluded Chunks from the Configuration
+     *
+     * @return List of Excluded Chunks
+     */
+    private static Set<ExcludedChunk> getExcludedChunks() {
+        excludedChunks = new HashSet<>();
+        getStringList("snowPoseIgnoredChunks").forEach(chunk -> {
+            String[] splitChunk = chunk.split(",");
+            int fromX = Integer.parseInt(splitChunk[0]);
+            int fromZ = Integer.parseInt(splitChunk[1]);
+            int toX = Integer.parseInt(splitChunk[2]);
+            int toZ = Integer.parseInt(splitChunk[3]);
+            boolean preventVanilla = Boolean.parseBoolean(splitChunk[4]);
+            excludedChunks.add(new ExcludedChunk(fromX, fromZ, toX, toZ, preventVanilla));
+        });
+        return excludedChunks;
     }
 }

@@ -3,6 +3,7 @@ package com.bettersnowiersnow;
 import com.bettersnowiersnow.config.Settings;
 import com.bettersnowiersnow.event.*;
 import com.bettersnowiersnow.task.SnowPoseTask;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +30,9 @@ public final class BetterSnowierSnow extends JavaPlugin {
         Settings.load();
         this.registerEvents();
         this.registerTasks();
+        if(Settings.metrics) {
+            new Metrics(this, 9912);
+        }
     }
 
     /**
@@ -59,7 +63,9 @@ public final class BetterSnowierSnow extends JavaPlugin {
             pluginManager.registerEvents(new SnowSlownessEvent(), this);
         }
         pluginManager.registerEvents(new SnowMeltEvent(), this);
-        pluginManager.registerEvents(new TestEvent(), this);
+        if(Settings.excludedChunks != null && Settings.excludedChunks.size() > 0) {
+            pluginManager.registerEvents(new SnowPoseEvent(), this);
+        }
     }
 
     /**

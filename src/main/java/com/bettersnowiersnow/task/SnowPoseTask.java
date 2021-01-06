@@ -1,5 +1,6 @@
 package com.bettersnowiersnow.task;
 
+import com.bettersnowiersnow.config.Settings;
 import com.bettersnowiersnow.utils.Utilities;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -8,7 +9,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Snow;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -24,17 +28,19 @@ public class SnowPoseTask implements Runnable {
     @Override
     public void run() {
         Set<Chunk> loadedChunks = Utilities.getLoadedChunks();
-        loadedChunks.forEach(chunk -> {
+        loadedChunks.stream().filter(chunk -> !Utilities.isChunkExcluded(chunk)).forEach(chunk -> {
             if(Utilities.shouldPoseSnow()) {
-                Block block = getRandomBlockAtMinLevel(chunk);
-                if(block != null) {
-                    Snow snow;
-                    if (!Utilities.isSnowLayer(block)) {
-                        block = Utilities.getRelativeBlock(block, BlockFace.UP);
-                        block.setType(Material.SNOW);
-                    }
-                    snow = Utilities.cast(block);
-                    Utilities.increaseSnowLayersFromPosing(block, snow);
+                Set<Block> blocks = getRandomBlocksAtMinLevel(chunk);
+                if(blocks != null && blocks.size() > 0) {
+                    blocks.forEach(block -> {
+                        Snow snow;
+                        if (!Utilities.isSnowLayer(block)) {
+                            block = Utilities.getRelativeBlock(block, BlockFace.UP);
+                            block.setType(Material.SNOW);
+                        }
+                        snow = Utilities.cast(block);
+                        Utilities.increaseSnowLayersFromPosing(block, snow);
+                    });
                 }
             }
         });
@@ -46,7 +52,7 @@ public class SnowPoseTask implements Runnable {
      * @param chunk Chunk
      * @return Chunk Minimum Snow Level
      */
-    private Block getRandomBlockAtMinLevel(Chunk chunk) {
+    private Set<Block> getRandomBlocksAtMinLevel(Chunk chunk) {
         Set<Block> chunkBlocks = getValidChunkBlocks(chunk.getWorld(), chunk.getX(), chunk.getZ());
         int minLevel = chunkBlocks.stream().mapToInt(block -> {
             Block blockAbove = Utilities.getRelativeBlock(block, BlockFace.UP);
@@ -58,18 +64,19 @@ public class SnowPoseTask implements Runnable {
         }).min().orElse(0);
         List<Block> blockPool;
         if(minLevel == 0) {
-            blockPool = chunkBlocks.stream().filter(block -> !Utilities.isSnowLayer(block)).collect(Collectors.toList());
+            blockPool = chunkBlocks.stream().filter(block -> !Utilities.isSnowLayer(Utilities.getRelativeBlock(block, BlockFace.UP))).collect(Collectors.toList());
         } else {
-            blockPool = chunkBlocks.stream().filter(Utilities::isSnowLayer).filter(block -> {
+            blockPool = chunkBlocks.stream().filter(block -> Utilities.isSnowLayer(Utilities.getRelativeBlock(block, BlockFace.UP)))
+                    .map(block -> Utilities.getRelativeBlock(block, BlockFace.UP)).filter(block -> {
                 Snow snow = Utilities.cast(block);
-                return snow.getLayers() == minLevel - 1 && Utilities.canMoreLayersBePlaced(snow);
+                return snow.getLayers() == minLevel && Utilities.canMoreLayersBePlaced(snow);
             }).collect(Collectors.toList());
         }
         if(blockPool.size() == 0) {
             return null;
         }
         Collections.shuffle(blockPool);
-        return blockPool.stream().findFirst().orElse(null);
+        return blockPool.stream().limit(Settings.snowPoseBlocks).collect(Collectors.toSet());
     }
 
     /**
