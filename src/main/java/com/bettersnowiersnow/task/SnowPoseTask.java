@@ -9,10 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Snow;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,14 +29,16 @@ public class SnowPoseTask implements Runnable {
             if(Utilities.shouldPoseSnow()) {
                 Set<Block> blocks = getRandomBlocksAtMinLevel(chunk);
                 if(blocks != null && blocks.size() > 0) {
-                    blocks.forEach(block -> {
+                    blocks.stream().filter(Objects::nonNull).forEach(block -> {
                         Snow snow;
+                        int increase = 1;
                         if (!Utilities.isSnowLayer(block)) {
                             block = Utilities.getRelativeBlock(block, BlockFace.UP);
                             block.setType(Material.SNOW);
+                            increase = 0;
                         }
                         snow = Utilities.cast(block);
-                        Utilities.increaseSnowLayersFromPosing(block, snow);
+                        Utilities.increaseSnowLayersFromPosing(block, snow, increase);
                     });
                 }
             }
@@ -94,6 +93,7 @@ public class SnowPoseTask implements Runnable {
                 chunkBlocks.add(world.getHighestBlockAt(i + (x * 16), j + (z * 16)));
             }
         }
-        return chunkBlocks.stream().filter(Utilities::isValidMaterial).collect(Collectors.toSet());
+        return chunkBlocks.stream().filter(block ->
+                Utilities.isInColdBiome(block) && Utilities.isValidMaterial(block) && Utilities.isValidBlockAboveForPose(block)).collect(Collectors.toSet());
     }
 }
