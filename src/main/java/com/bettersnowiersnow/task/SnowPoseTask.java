@@ -40,9 +40,7 @@ public class SnowPoseTask implements Runnable {
                         try {
                             snow = Utilities.cast(block);
                             Utilities.increaseSnowLayersFromPosing(block, snow, increase);
-                        } catch (Exception ignored) {
-
-                        }
+                        } catch (Exception ignored) { }
                     });
                 }
             }
@@ -94,7 +92,12 @@ public class SnowPoseTask implements Runnable {
         Set<Block> chunkBlocks = new HashSet<>();
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
-                chunkBlocks.add(world.getHighestBlockAt(i + (x * 16), j + (z * 16)));
+                Block startingBlock = world.getHighestBlockAt(i + (x * 16), j + (z * 16));
+                Block highestBlock = Utilities.getRelativeBlock(startingBlock, BlockFace.UP);
+                if(Utilities.isSnowLayer(highestBlock) || Utilities.isAir(highestBlock)) {
+                    highestBlock = startingBlock;
+                }
+                chunkBlocks.add(highestBlock);
             }
         }
         return chunkBlocks.stream().filter(block ->

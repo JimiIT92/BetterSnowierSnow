@@ -161,7 +161,7 @@ public class Utilities {
      * @return True if is valid, False otherwise
      */
     public static boolean isValidMaterialForFalling(Block block) {
-        return !block.getType().isAir() && !block.isLiquid() /*&& !Tag.ICE.isTagged(block.getType()) && !is(block, Material.CAULDRON)*/;
+        return !block.getType().isAir() && !block.isLiquid();
     }
 
     /**
@@ -202,11 +202,41 @@ public class Utilities {
     private static boolean isInvalid(Block block) {
         return (isSlab(block) && ! isTopOrDoubleSlab(block))
                 || is(block, Material.HOPPER)
+                || is(block, Material.BARRIER)
+                || is(block, Material.STRUCTURE_VOID)
                 || isIce(block)
                 || is(block, Material.CAULDRON)
                 || (isStair(block) && !isTopStair(block))
                 || (isTrapdoor(block) && !isTopTrapdoor(block))
-                || isFence(block);
+                || isFence(block)
+                || isGlassPane(block)
+                || is(block, Material.IRON_BARS);
+    }
+
+    /**
+     * Check if a Block is a Glass Pane
+     *
+     * @param block Block to check
+     * @return True if is a Glass Pane, False otherwise
+     */
+    public static boolean isGlassPane(Block block) {
+        return is(block, Material.GLASS_PANE)
+                || is(block, Material.BLACK_STAINED_GLASS_PANE)
+                || is(block, Material.RED_STAINED_GLASS_PANE)
+                || is(block, Material.GREEN_STAINED_GLASS_PANE)
+                || is(block, Material.YELLOW_STAINED_GLASS_PANE)
+                || is(block, Material.BLUE_STAINED_GLASS_PANE)
+                || is(block, Material.WHITE_STAINED_GLASS_PANE)
+                || is(block, Material.PINK_STAINED_GLASS_PANE)
+                || is(block, Material.ORANGE_STAINED_GLASS_PANE)
+                || is(block, Material.GRAY_STAINED_GLASS_PANE)
+                || is(block, Material.LIGHT_GRAY_STAINED_GLASS_PANE)
+                || is(block, Material.LIGHT_BLUE_STAINED_GLASS_PANE)
+                || is(block, Material.LIME_STAINED_GLASS_PANE)
+                || is(block, Material.PURPLE_STAINED_GLASS_PANE)
+                || is(block, Material.BROWN_STAINED_GLASS_PANE)
+                || is(block, Material.MAGENTA_STAINED_GLASS_PANE)
+                || is(block, Material.CYAN_STAINED_GLASS_PANE);
     }
 
     /**
