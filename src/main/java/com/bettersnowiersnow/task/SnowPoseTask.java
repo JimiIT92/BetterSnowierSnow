@@ -37,8 +37,12 @@ public class SnowPoseTask implements Runnable {
                             block.setType(Material.SNOW);
                             increase = 0;
                         }
-                        snow = Utilities.cast(block);
-                        Utilities.increaseSnowLayersFromPosing(block, snow, increase);
+                        try {
+                            snow = Utilities.cast(block);
+                            Utilities.increaseSnowLayersFromPosing(block, snow, increase);
+                        } catch (Exception ignored) {
+
+                        }
                     });
                 }
             }

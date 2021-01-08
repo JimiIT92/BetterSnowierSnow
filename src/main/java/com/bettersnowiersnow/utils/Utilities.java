@@ -51,16 +51,12 @@ public class Utilities {
      * Cold Biomes
      */
     private static final List<Biome> coldBiomes = Arrays.asList(
-            Biome.COLD_OCEAN
-            , Biome.DEEP_FROZEN_OCEAN
-            , Biome.DEEP_COLD_OCEAN
+              Biome.DEEP_FROZEN_OCEAN
             , Biome.FROZEN_OCEAN
             , Biome.FROZEN_RIVER
             , Biome.ICE_SPIKES
             , Biome.SNOWY_BEACH
             , Biome.SNOWY_MOUNTAINS
-            , Biome.MOUNTAINS
-            , Biome.MOUNTAIN_EDGE
             , Biome.SNOWY_TAIGA
             , Biome.SNOWY_TAIGA_HILLS
             , Biome.SNOWY_TAIGA_MOUNTAINS
@@ -165,7 +161,7 @@ public class Utilities {
      * @return True if is valid, False otherwise
      */
     public static boolean isValidMaterialForFalling(Block block) {
-        return !block.getType().isAir() && !block.isLiquid() && !Tag.ICE.isTagged(block.getType()) && !is(block, Material.CAULDRON);
+        return !block.getType().isAir() && !block.isLiquid() /*&& !Tag.ICE.isTagged(block.getType()) && !is(block, Material.CAULDRON)*/;
     }
 
     /**
@@ -176,17 +172,41 @@ public class Utilities {
      */
     public static boolean isSolidFullBlock(Block block) {
         Material material = block.getType();
-        return material.isOccluding() || is(block, Material.SCAFFOLDING) ||
+        return !isInvalid(block) && (
+                material.isOccluding() || is(block, Material.SCAFFOLDING) ||
                 (material.isSolid() && (
                     isTopOrDoubleSlab(block)
                     || isTopStair(block)
                     || isTopTrapdoor(block)
-                    || (block.getBoundingBox().getVolume() == 1.0D && !isSlab(block)
-                            && !is(block, Material.HOPPER)
-                            && !isStair(block) && !isTrapdoor(block)
-                            && (material.isBlock() && !block.isLiquid() && !block.isPassable())
-                    )
-                ));
+                    || isFullBlock(block)
+                )));
+    }
+
+    /**
+     * Check if a Block is a Full Block
+     *
+     * @param block Block to Check
+     * @return True if is a Full Block, False otherwise
+     */
+    private static boolean isFullBlock(Block block) {
+        return block.getBoundingBox().getVolume() == 1.0D
+                && (block.getType().isBlock() && !block.isLiquid() && !block.isPassable());
+    }
+
+    /**
+     * Check if a Block is invalid for Snow Pose
+     *
+     * @param block Block to check
+     * @return True if the block is invalid, False otherwise
+     */
+    private static boolean isInvalid(Block block) {
+        return (isSlab(block) && ! isTopOrDoubleSlab(block))
+                || is(block, Material.HOPPER)
+                || isIce(block)
+                || is(block, Material.CAULDRON)
+                || (isStair(block) && !isTopStair(block))
+                || (isTrapdoor(block) && !isTopTrapdoor(block))
+                || isFence(block);
     }
 
     /**
@@ -226,9 +246,19 @@ public class Utilities {
     private static boolean isTopTrapdoor(Block block) {
         if(isTrapdoor(block)) {
             TrapDoor trapDoor = cast(block);
-            return trapDoor.getHalf() == Bisected.Half.TOP;
+            return trapDoor.getHalf() == Bisected.Half.TOP && !trapDoor.isOpen();
         }
         return false;
+    }
+
+    /**
+     * Check if a Block is a Fence
+     *
+     * @param block Block to check
+     * @return True if the Block is a Fence, False otherwise
+     */
+    private static boolean isFence(Block block) {
+        return Tag.FENCES.isTagged(block.getType()) || Tag.WOODEN_FENCES.isTagged(block.getType());
     }
 
     /**
@@ -269,6 +299,28 @@ public class Utilities {
      */
     public static boolean isValidMaterial(Block block) {
         return isSnowBlockOrLayer(block) || (isValidMaterialForFalling(block) && isSolidFullBlock(block));
+    }
+
+    /**
+     * Check if the Block above the one provided
+     * is valid for snow pose
+     *
+     * @param block Ground block
+     * @return True if the block above is valid for snow pose, False otherwise
+     */
+    public static boolean isValidBlockAboveForPose(Block block) {
+        Block blockAbove = getRelativeBlock(block, BlockFace.UP);
+        return isValidMaterial(blockAbove) || isAir(blockAbove);
+    }
+
+    /**
+     * Check if a Block is air
+     *
+     * @param block Block to check
+     * @return True if the Block is air, False otherwise
+     */
+    public static boolean isAir(Block block) {
+        return block.getType().isAir();
     }
 
     /**
@@ -325,7 +377,30 @@ public class Utilities {
      * @return True if the Block is in a Cold Biome, False otherwise
      */
     public static boolean isInColdBiome(Block block) {
-        return block.getTemperature() <= 0.15D || coldBiomes.contains(block.getBiome());
+        return block.getTemperature() <= 0.15D || coldBiomes.contains(block.getBiome()) || isInHighMountain(block);
+    }
+
+    /**
+     * Check if a Block is in High Mountain
+     *
+     * @param block Block to Check
+     * @return True if is in High Mountain, False otherwise
+     */
+    public static boolean isInHighMountain(Block block) {
+        Biome biome = block.getBiome();
+        return (biome == Biome.MOUNTAINS || biome == Biome.MOUNTAIN_EDGE) && block.getY() >= 95;
+    }
+
+    /**
+     * Check if a Block is an Ice Block
+     *
+     * @param block Block to check
+     * @return True if is an Ice Block, False otherwise
+     */
+    public static boolean isIce(Block block) {
+        return Tag.ICE.isTagged(block.getType()) ||
+                is(block, Material.ICE) ||
+                is(block, Material.PACKED_ICE) || is(block, Material.FROSTED_ICE);
     }
 
     /**
@@ -384,9 +459,10 @@ public class Utilities {
      *
      * @param block Block
      * @param snow Snow
+     * @param amount How many layers to increase
      */
-    public static void increaseSnowLayersFromPosing(Block block, Snow snow) {
-        snow.setLayers(snow.getLayers() + 1);
+    public static void increaseSnowLayersFromPosing(Block block, Snow snow, int amount) {
+        snow.setLayers(snow.getLayers() + amount);
         block.setBlockData(snow);
         Bukkit.getPluginManager().callEvent(new BlockFormEvent(block, block.getState()));
     }
