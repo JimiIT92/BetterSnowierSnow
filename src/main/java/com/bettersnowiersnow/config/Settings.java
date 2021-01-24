@@ -4,6 +4,7 @@ import com.bettersnowiersnow.BetterSnowierSnow;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,9 +88,9 @@ public class Settings {
      */
     public static boolean metrics;
     /**
-     * Snow Pose Task
+     * Snow Pose Tasks
      */
-    public static BukkitTask snowPoseTask;
+    public static HashMap<String, BukkitTask> snowPoseTasks = new HashMap<>();
 
     /**
      * Load configuration

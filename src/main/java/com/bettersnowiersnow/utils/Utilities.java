@@ -2,6 +2,7 @@ package com.bettersnowiersnow.utils;
 
 import com.bettersnowiersnow.BetterSnowierSnow;
 import com.bettersnowiersnow.config.Settings;
+import com.bettersnowiersnow.task.SnowPoseTask;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -47,6 +49,7 @@ public class Utilities {
      * Logger Instance
      */
     private static final Logger LOGGER = PLUGIN.getLogger();
+
     /**
      * Cold Biomes
      */
@@ -518,6 +521,7 @@ public class Utilities {
         Bukkit.getOnlinePlayers().stream()
                 .filter(player -> isValidWorld(player.getWorld()))
                 .map(player -> player.getLocation().getChunk())
+                .filter(chunk -> !Utilities.isChunkExcluded(chunk))
                 .forEach(chunk -> {
                     int chunkX = chunk.getX();
                     int chunkZ = chunk.getZ();
@@ -536,10 +540,34 @@ public class Utilities {
      * @param world World
      * @return True if the World is valid for snow pose strategies, False otherwise
      */
-    private static boolean isValidWorld(World world) {
+    public static boolean isValidWorld(World world) {
         return Settings.snowPoseWorlds.contains(world.getName())
                 && world.getEnvironment() == World.Environment.NORMAL
                 && world.hasStorm();
+    }
+
+    /**
+     * Run a snow pose task for a World
+     *
+     * @param world World name
+     */
+    public static void runSnowPoseTaskForWorld(String world) {
+        BukkitTask task = Bukkit.getScheduler().runTaskTimer(BetterSnowierSnow.getInstance(), new SnowPoseTask(), Settings.snowPoseFrequency, Settings.snowPoseFrequency);
+        cancelSnowPoseTaskForWorld(world);
+        Settings.snowPoseTasks.put(world, task);
+    }
+
+    /**
+     * Cancel a snow pose task for a World
+     *
+     * @param world World name
+     */
+    public static void cancelSnowPoseTaskForWorld(String world) {
+        BukkitTask task = Settings.snowPoseTasks.getOrDefault(world, null);
+        if(task != null) {
+            task.cancel();
+            Bukkit.getScheduler().cancelTask(task.getTaskId());
+        }
     }
 
     /**

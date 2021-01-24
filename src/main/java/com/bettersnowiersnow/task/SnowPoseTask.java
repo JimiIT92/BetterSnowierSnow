@@ -24,8 +24,7 @@ public class SnowPoseTask implements Runnable {
      */
     @Override
     public void run() {
-        Set<Chunk> loadedChunks = Utilities.getLoadedChunks();
-        loadedChunks.stream().filter(chunk -> !Utilities.isChunkExcluded(chunk)).forEach(chunk -> {
+        Utilities.getLoadedChunks().forEach(chunk -> {
             if(Utilities.shouldPoseSnow()) {
                 Set<Block> blocks = getRandomBlocksAtMinLevel(chunk);
                 if(blocks != null && blocks.size() > 0) {
