@@ -57,7 +57,9 @@ that the additions are in line with the plugin philosophy, which is to bring an 
 
 You can download Better Snowier Snow from the [CurseForge page](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow).
 
-This is the only place where I directly upload new releases. Every other website shouldn't be trusted.
+You can also download Better Snowier Snow from the [Spigot page](https://www.spigotmc.org/resources/better-snowier-snow.89028/)
+
+These are the only places where I directly upload new releases. Every other website shouldn't be trusted.
 
 # 🍺 Support the project
 Developing and maintaining this plugin requires some time and effort, but after all I really enjoy doing this ❤
