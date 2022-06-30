@@ -66,9 +66,9 @@ Developing and maintaining this plugin requires some time and effort, but after 
 
 This plugin is **FREE TO USE** and will ALWAYS be. If someone asked you some money, you got scammed! 😥 
 
-But if you want to show some support to the project (or just buy me some beer to produce more code), these are the only ways:
+But if you want to show some support to the project (or just buy me some beer to produce more code), Ko-Fi is the only way:
 
-<p align="center"><a href="https://www.buymeacoffee.com/JimiIT92" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" width=330 height=75 alt="Buy Me A Beer"></a>&emsp;&emsp;&emsp;&emsp;&emsp;<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=26VTWV4CY282S" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/PayPal_logo.svg/1280px-PayPal_logo.svg.png" width=330 height=75 alt="Donate with PayPal"></a></p>
+<p align="center"><a href="https://ko-fi.com/jimi_" target="_blank"><img src="https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/61e11d503cc13747866d338b_Button-2.png" width=660 height=100 alt="Buy Me A Beer"></a></p>
 
 Any other websites asking you money for this project is a scam, and you should immediately report it! 😡
 
