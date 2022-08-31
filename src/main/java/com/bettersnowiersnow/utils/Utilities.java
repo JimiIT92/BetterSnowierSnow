@@ -22,8 +22,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -45,10 +43,6 @@ public class Utilities {
      * Scheduler Instance
      */
     private static final BukkitScheduler SCHEDULER = Bukkit.getScheduler();
-    /**
-     * Logger Instance
-     */
-    private static final Logger LOGGER = PLUGIN.getLogger();
 
     /**
      * Cold Biomes
@@ -59,31 +53,14 @@ public class Utilities {
             , Biome.FROZEN_RIVER
             , Biome.ICE_SPIKES
             , Biome.SNOWY_BEACH
-            , Biome.SNOWY_MOUNTAINS
+            , Biome.FROZEN_PEAKS
+            , Biome.JAGGED_PEAKS
+            , Biome.STONY_PEAKS
+            , Biome.MEADOW
+            , Biome.GROVE
+            , Biome.SNOWY_SLOPES
             , Biome.SNOWY_TAIGA
-            , Biome.SNOWY_TAIGA_HILLS
-            , Biome.SNOWY_TAIGA_MOUNTAINS
-            , Biome.SNOWY_TUNDRA
     );
-
-    /**
-     * Log a message with Warning level
-     *
-     * @param message Message
-     */
-    public static void log(String message) {
-        log(Level.WARNING, message);
-    }
-
-    /**
-     * Log a message
-     *
-     * @param level Log Level
-     * @param message Message
-     */
-    public static void log(Level level, String message) {
-        LOGGER.log(level, message);
-    }
 
     /**
      * Check if a Block is of a given Material
@@ -113,7 +90,7 @@ public class Utilities {
      * @return True if is a Snow Block, False otherwise
      */
     public static boolean isSnowBlock(Block block) {
-        return is(block, Material.SNOW_BLOCK);
+        return is(block, Material.SNOW_BLOCK) || is(block, Material.POWDER_SNOW);
     }
 
     /**
@@ -133,7 +110,7 @@ public class Utilities {
      * @return True if is a Snow Layer or a Snow Block, False otherwise
      */
     public static boolean isSnowBlockOrLayer(Material material) {
-        return material == Material.SNOW_BLOCK || material == Material.SNOW;
+        return material == Material.SNOW_BLOCK || material == Material.SNOW || material == Material.POWDER_SNOW;
     }
 
     /**
@@ -145,16 +122,6 @@ public class Utilities {
      */
     public static Block getRelativeBlock(Block block, BlockFace face) {
         return block.getRelative(face);
-    }
-
-    /**
-     * Check if the Block below is valid for a snow layer to fall
-     *
-     * @param block Block to check
-     * @return True if the Block below is valid, False otherwise
-     */
-    public static boolean isValidBlockBelowForFalling(Block block) {
-        return isValidMaterialForFalling(getRelativeBlock(block, BlockFace.DOWN));
     }
 
     /**
@@ -421,7 +388,9 @@ public class Utilities {
      */
     public static boolean isInHighMountain(Block block) {
         Biome biome = block.getBiome();
-        return (biome == Biome.MOUNTAINS || biome == Biome.MOUNTAIN_EDGE) && block.getY() >= 95;
+        return (biome == Biome.FROZEN_PEAKS || biome == Biome.JAGGED_PEAKS
+                || biome == Biome.STONY_PEAKS || biome == Biome.MEADOW
+                || biome == Biome.GROVE || biome == Biome.SNOWY_SLOPES) && block.getY() >= 95;
     }
 
     /**

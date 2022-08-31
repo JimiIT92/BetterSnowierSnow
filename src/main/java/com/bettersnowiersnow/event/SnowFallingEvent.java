@@ -3,12 +3,14 @@ package com.bettersnowiersnow.event;
 import com.bettersnowiersnow.utils.Utilities;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityDropItemEvent;
 
@@ -34,11 +36,14 @@ public class SnowFallingEvent implements Listener {
                 block.setType(Material.SNOW_BLOCK);
             }
         }
+    }
 
-        if(Utilities.isSnowBlockOrLayer(block)) {
-            if(!Utilities.isValidBlockBelowForFalling(block)) {
-                Utilities.spawnFallingSnow(block);
-            }
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        Block block = event.getBlock();
+        Block blockAbove = block.getRelative(BlockFace.UP);
+        if(Utilities.isSnowBlockOrLayer(blockAbove)) {
+            Utilities.spawnFallingSnow(blockAbove);
         }
     }
 
@@ -50,11 +55,10 @@ public class SnowFallingEvent implements Listener {
     @EventHandler
     public void onFallingSnowDrop(EntityDropItemEvent event) {
         Entity entity = event.getEntity();
-        if(entity instanceof FallingBlock) {
-            FallingBlock fallingBlock = (FallingBlock) entity;
+        if(entity instanceof FallingBlock fallingBlock) {
             BlockData fallingBlockData = fallingBlock.getBlockData();
             Material material = fallingBlockData.getMaterial();
-            if(material == Material.SNOW_BLOCK) {
+            if(material == Material.SNOW_BLOCK || material == Material.POWDER_SNOW) {
                 Utilities.dropItemAtEntity(fallingBlock, Material.SNOWBALL, 2);
             }
             if(material == Material.SNOW) {

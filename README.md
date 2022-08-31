@@ -1,4 +1,4 @@
-# ❄ BetterSnowierSnow ![](https://img.shields.io/badge/Release-1.0-yellow) [![](https://img.shields.io/badge/Minecraft-1.16.x-success)](https://minecraft.net/) [![](http://cf.way2muchnoise.eu/full_446813_downloads.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow)
+# ❄ BetterSnowierSnow ![](https://img.shields.io/badge/Release-1.1-yellow) [![](https://img.shields.io/badge/Minecraft-1.19.x-success)](https://minecraft.net/) [![](http://cf.way2muchnoise.eu/full_446813_downloads.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow)
 
 <p align="center"><img align="center" width=10% height=10% src="logo.png"/></p>
 
@@ -10,7 +10,7 @@ This plugin is inspired by the [Snowier Snow plugin by hobblyhobo](https://www.s
 his plugin as well!
 
 # 🔧 How it works
-Better Snowier Snow provides a simple configuration tool that allows you to change the behaviour of Snow Blocks and Snow Layers, to make them act more realistically.
+Better Snowier Snow provides a simple configuration tool that allows you to change the behaviour of Powder Snow, Snow Blocks and Snow Layers, to make them act more realistically.
 For instance, you can give them gravity, so they will fall when the block below is broken, or you can make them stack up when it's snowing!
 
 # ⚙ Configuring
@@ -23,7 +23,8 @@ The configuration file allows you to configure different aspects of the plugin
 **snowPoseWorlds**: List of worlds where the plugin has effect
 
 **snowPoseIgnoredChunks**: List of chunk rectangular regions where the plugin won't have effect.
-The string syntax is the following: <start chunk x>,<start chunk y>,<end chunk x>,<end chunk y>,<prevent also vanilla layer from posing>
+The string syntax is the following: **&lt;start chunk x&gt;,&lt;start chunk y&gt;,&lt;end chunk x&gt;,&lt;end chunk y&gt;,&lt;prevent also vanilla layer from posing&gt;**
+
 To add just one chunk to the list just set both start chunk and end chunk coordinates to the same
 
 **slownessOnSnow**: If true, players will get the slowness effect while walking on snow blocks or layers
@@ -34,7 +35,7 @@ To add just one chunk to the list just set both start chunk and end chunk coordi
 
 **slownessSneakingPrevent**: If true, players won't get the slowness effect (if active) when they are sneaking
 
-**metrics**: Enable [bStats metrics](https://bstats.org/plugin/bukkit/Better%20Snowier%20Snow/9912). This **does not collect any personal/sensitive information**.
+**metrics**: Enable [bStats metrics](https://bstats.org/plugin/bukkit/Better%20Snowier%20Snow/9912). This **does not collect any personal/sensitive information**. If enabled you need [bStats](https://bstats.org/) installed
 
 # 📜 Requirements
 Better Snowier Snow does not require any additional plugin or mod to run, other than [Spigot itself](https://www.spigotmc.org/).
