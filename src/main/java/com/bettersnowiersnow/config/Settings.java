@@ -19,7 +19,7 @@ public class Settings {
     /**
      * Config Instance
      */
-    private static final FileConfiguration CONFIG = BetterSnowierSnow.getInstance().getConfig();
+    private static FileConfiguration CONFIG;
     /**
      * If snow layers and blocks will fall when
      * the Block below is broken
@@ -84,6 +84,14 @@ public class Settings {
      */
     public static Set<ExcludedChunk> excludedChunks;
     /**
+     * The chance of snow to be melted
+     */
+    public static double snowMeltPercentage;
+    /**
+     * The minimum amount of snow layers that can be left from melting
+     */
+    public static int snowMeltMinLayers;
+    /**
      * If metrics are allowed
      */
     public static boolean metrics;
@@ -96,6 +104,7 @@ public class Settings {
      * Load configuration
      */
     public static void load() {
+        CONFIG = BetterSnowierSnow.getInstance().getConfig();
         snowGravity = getBoolean("snowGravity");
         noMeltInColdBiomes = getBoolean("noMeltInColdBiomes");
         meltAboveLightLevel = Math.min(Math.max(0, getInt("meltAboveLightLevel")), 15);
@@ -111,6 +120,8 @@ public class Settings {
         snowPoseMaxLayers = Math.min(7, Math.max(0, getInt("snowPoseMaxLayers")));
         snowPoseBlocks = Math.min(Math.max(0, getInt("snowPoseBlocks")), 256);
         excludedChunks = getExcludedChunks();
+        snowMeltPercentage = getDouble("snowMeltPercentage");
+        snowMeltMinLayers = Math.max(0, Math.min(7, getInt("snowMeltMinLayers")));
         metrics = getBoolean("metrics");
     }
 

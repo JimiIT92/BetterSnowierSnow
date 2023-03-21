@@ -457,7 +457,7 @@ public class Utilities {
     }
 
     /**
-     * Increase the Snow Layers by posing another one
+     * Increase the Snow Layers by posing other ones
      *
      * @param block Block
      * @param snow Snow
@@ -467,6 +467,21 @@ public class Utilities {
         snow.setLayers(snow.getLayers() + amount);
         block.setBlockData(snow);
         Bukkit.getPluginManager().callEvent(new BlockFormEvent(block, block.getState()));
+    }
+
+    /**
+     * Decrease the Snow Layers by melting some
+     *
+     * @param block Block
+     * @param snow Snow
+     * @param amount How many layers to decrease
+     */
+    public static void decreaseSnowLayersFromMelting(Block block, Snow snow, int amount) {
+        if(canMoreLayersBeMelted(snow)) {
+            snow.setLayers(snow.getLayers() - amount);
+            block.setBlockData(snow);
+            Bukkit.getPluginManager().callEvent(new BlockFormEvent(block, block.getState()));
+        }
     }
 
     /**
@@ -542,10 +557,19 @@ public class Utilities {
     /**
      * Check if Snow could be posed
      *
-     * @return True if snow could be pose, False otherwise
+     * @return True if snow could be posed, False otherwise
      */
     public static boolean shouldPoseSnow() {
         return RANDOM.nextFloat() <= Settings.snowChancePercentage;
+    }
+
+    /**
+     * Check if Snow could be melted
+     *
+     * @return True if snow could be melted, False otherwise
+     */
+    public static boolean shouldMeltSnow() {
+        return RANDOM.nextFloat() <= Settings.snowMeltPercentage;
     }
 
     /**
@@ -556,6 +580,16 @@ public class Utilities {
      */
     public static boolean canMoreLayersBePlaced(Snow snow) {
         return snow.getLayers() < Settings.snowPoseMaxLayers;
+    }
+
+    /**
+     * Check if more layers can be naturally melted
+     *
+     * @param snow Snow
+     * @return True if more layers can be melted, False otherwise
+     */
+    public static boolean canMoreLayersBeMelted(Snow snow) {
+        return snow.getLayers() > Settings.snowMeltMinLayers;
     }
 
     /**

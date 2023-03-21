@@ -1,5 +1,6 @@
 package com.bettersnowiersnow;
 
+import com.bettersnowiersnow.command.ReloadCommand;
 import com.bettersnowiersnow.config.Settings;
 import com.bettersnowiersnow.event.*;
 import com.bettersnowiersnow.utils.Utilities;
@@ -7,6 +8,8 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Objects;
 
 /**
  * Make snow act more realistically!
@@ -26,12 +29,15 @@ public final class BetterSnowierSnow extends JavaPlugin {
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        getConfig().options().copyDefaults(true);
+        saveConfig();
         Settings.load();
         this.registerEvents();
         this.registerTasks();
         if(Settings.metrics) {
             new Metrics(this, 9912);
         }
+        Objects.requireNonNull(this.getCommand("reload")).setExecutor(new ReloadCommand());
     }
 
     /**

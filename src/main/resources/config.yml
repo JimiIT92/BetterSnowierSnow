@@ -1,6 +1,6 @@
 # Make snow blocks and layers falling if the block below
 # is removed. Also make snow blocks drop 2 snowballs if
-# broken by falling on a non solid block
+# broken by falling on a non-solid block
 snowGravity: true
 # Make snow not melting in cold biomes
 noMeltInColdBiomes: true
@@ -39,7 +39,7 @@ snowPoseFrequency: 20
 snowPoseMaxLayers: 4
 # How many snow layers will be posed per ticks.
 # Negative values will be ignored and 1 will be used as value.
-# Also any value above 256 will be ignored and 256 will be used as value.
+# Any value above 256 will be ignored and 256 will be used as value.
 snowPoseBlocks: 1
 # List of worlds where the snow pose will have effect.
 # This is valid only for snow being posed by snowing,
@@ -72,5 +72,21 @@ slownessStrength: 1
 # Prevent slowness effect (if active) from being applied
 # if the player is sneaking
 slownessSneakingPrevent: false
-# Set if use metrics to collect plugin usage informations
+# Set to use metrics to collect plugin usage information
 metrics: false
+# The rate at which the snow could melt.
+# If set to 1, snow melting will be every x ticks,
+# where x is the amount of ticks specified by the
+# 'snowMeltFrequency' setting.
+# Setting this to 0 will prevent snow from melting at all.
+# The snow could melt only if the light level is above the
+# 'meltAboveLightLevel' value.
+# WARNING: setting this to a high value
+# may be memory consuming and cause lag
+snowMeltPercentage: 0.0625
+# The minimum amount of snow layers
+# that can be left posed by melting.
+# Values below 0 or negative will be ignored and 0 will
+# be used as value.
+# Also values above 7 will be ignored and 7 will be used as value.
+snowMeltMinLayers: 1

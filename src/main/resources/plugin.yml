@@ -7,3 +7,6 @@ prefix: BetterSnowierSnow
 authors: [ JimiIT922 ]
 description: Make snow act more realistically! Inspired by the Snowier Snow plugin by hobblyhobo
 website: https://github.com/JimiIT92/BetterSnowierSnow
+commands:
+  reload:
+    aliases: r
