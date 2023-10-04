@@ -166,9 +166,9 @@ public class Settings {
     }
 
     /**
-     * Get the List of Excluded Chunks from the Configuration
+     * Get the Set of Excluded Chunks from the Configuration
      *
-     * @return List of Excluded Chunks
+     * @return Set of Excluded Chunks
      */
     private static Set<ExcludedChunk> getExcludedChunks() {
         excludedChunks = new HashSet<>();

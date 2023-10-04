@@ -29,15 +29,24 @@ public final class BetterSnowierSnow extends JavaPlugin {
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        reloadConfig();
         getConfig().options().copyDefaults(true);
         saveConfig();
-        Settings.load();
         this.registerEvents();
         this.registerTasks();
         if(Settings.metrics) {
             new Metrics(this, 9912);
         }
         Objects.requireNonNull(this.getCommand("reload")).setExecutor(new ReloadCommand());
+    }
+
+    /**
+     * Load the configuration
+     */
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+        Settings.load();
     }
 
     /**
@@ -71,7 +80,7 @@ public final class BetterSnowierSnow extends JavaPlugin {
             pluginManager.registerEvents(new SnowSlownessEvent(), this);
         }
         pluginManager.registerEvents(new SnowMeltEvent(), this);
-        if(Settings.excludedChunks != null && Settings.excludedChunks.size() > 0) {
+        if(Settings.excludedChunks != null && !Settings.excludedChunks.isEmpty()) {
             pluginManager.registerEvents(new SnowPoseEvent(), this);
         }
     }

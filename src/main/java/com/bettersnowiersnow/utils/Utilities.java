@@ -1,6 +1,7 @@
 package com.bettersnowiersnow.utils;
 
 import com.bettersnowiersnow.BetterSnowierSnow;
+import com.bettersnowiersnow.config.ExcludedChunk;
 import com.bettersnowiersnow.config.Settings;
 import com.bettersnowiersnow.task.SnowPoseTask;
 import org.bukkit.*;
@@ -421,7 +422,7 @@ public class Utilities {
      *
      * @param block Block
      * @param <T> BlockData Type
-     * @return Casted BlockData
+     * @return The cast BlockData
      */
     @SuppressWarnings("unchecked")
     public static <T> T cast(Block block) {
@@ -599,7 +600,7 @@ public class Utilities {
      * @return True if the Chunk is excluded, False otherwise
      */
     public static boolean isChunkExcludedForVanilla(Chunk chunk) {
-        return Settings.excludedChunks.stream().filter(c -> c.preventVanilla).anyMatch(c -> c.isInExcludedChunk(chunk));
+        return Settings.excludedChunks.stream().filter(ExcludedChunk::preventVanilla).anyMatch(c -> c.isInExcludedChunk(chunk));
     }
 
     /**

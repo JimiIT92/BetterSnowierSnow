@@ -1,6 +1,6 @@
-# ❄ BetterSnowierSnow ![](https://img.shields.io/badge/Release-1.2-yellow) [![](https://img.shields.io/badge/Minecraft-1.19.x-success)](https://minecraft.net/) [![](http://cf.way2muchnoise.eu/full_446813_downloads.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow)
+# ❄ BetterSnowierSnow ![](https://img.shields.io/badge/Release-1.3-yellow) [![](https://img.shields.io/badge/Minecraft-1.20.2-success)](https://minecraft.net/) [![](http://cf.way2muchnoise.eu/full_446813_downloads.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow)
 
-<p align="center"><img align="center" width=10% height=10% src="logo.png"/></p>
+<p align="center"><img align="center" style="width:10%; height:10%;" src="logo.png" alt="Better Snowier Snow Logo"/></p>
 
 Have you ever felt like snow in Minecraft isn't quite right? Well, fear no more my friend because with this plugin you can make it act more realistically!
 
@@ -74,7 +74,7 @@ But if you want to show some support to the project (or just buy me some beer to
 Any other websites asking you money for this project is a scam, and you should immediately report it! 😡
 
 # 📖 Credits
-All credits goes to **hobblyhobo** for creating the [Snowier Snow plugin](https://www.spigotmc.org/resources/snowiersnow.72213/).
+All credits go to **hobblyhobo** for creating the [Snowier Snow plugin](https://www.spigotmc.org/resources/snowiersnow.72213/).
 This plugin is amazing, however I felt like some features were missing. Also, some might not like how the snow poses in his plugin,
 so that's why this uses a different approach (that leads to smoother snow formations).
 

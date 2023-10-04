@@ -34,7 +34,7 @@ public class SnowPoseEvent implements Listener {
     }
 
     /**
-     * Run the snow pose task only if is snowing
+     * Run the snow pose task only if it's snowing
      * and cancel it when it's clear weather
      *
      * @param event Weather Change Event
@@ -52,9 +52,9 @@ public class SnowPoseEvent implements Listener {
     }
 
     /**
-     * If a Player iss the first joining a world
+     * If a Player is the first joining a world
      * than a snow pose task for that world will be fired
-     * if is snowing and there isn't a snow pose task already running
+     * if it's snowing and there isn't a snow pose task already running
      *
      * @param event Player Login Event
      */

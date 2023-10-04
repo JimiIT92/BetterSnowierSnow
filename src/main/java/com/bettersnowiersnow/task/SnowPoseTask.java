@@ -27,7 +27,7 @@ public class SnowPoseTask implements Runnable {
         Utilities.getLoadedChunks().forEach(chunk -> {
             if(Utilities.shouldPoseSnow()) {
                 Set<Block> blocks = getRandomBlocksAtMinLevel(chunk);
-                if(blocks != null && blocks.size() > 0) {
+                if(blocks != null && !blocks.isEmpty()) {
                     blocks.stream().filter(Objects::nonNull).forEach(block -> {
                         Snow snow;
                         int increase = 1;
@@ -72,7 +72,7 @@ public class SnowPoseTask implements Runnable {
                 return snow.getLayers() == minLevel && Utilities.canMoreLayersBePlaced(snow);
             }).collect(Collectors.toList());
         }
-        if(blockPool.size() == 0) {
+        if(blockPool.isEmpty()) {
             return null;
         }
         Collections.shuffle(blockPool);
