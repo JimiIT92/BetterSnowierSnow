@@ -23,8 +23,8 @@ public class SnowMeltEvent implements Listener {
     @EventHandler
     public void onSnowMelt(BlockFadeEvent event) {
         Block block = event.getBlock();
-        event.setCancelled(true);
         if(Utilities.isSnowBlockOrLayer(block)) {
+            event.setCancelled(true);
             if ((Settings.noMeltInColdBiomes && Utilities.isInColdBiome(block)) || Utilities.isBelowMinimumLightLevel(block)) {
                 return;
             }
