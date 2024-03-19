@@ -1,4 +1,4 @@
-# ❄ BetterSnowierSnow ![](https://img.shields.io/badge/Release-1.3-yellow) [![](https://img.shields.io/badge/Minecraft-1.20.2-success)](https://minecraft.net/) [![](http://cf.way2muchnoise.eu/full_446813_downloads.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow)
+# ❄ BetterSnowierSnow ![](https://img.shields.io/badge/Release-1.4-yellow) [![](https://img.shields.io/badge/Minecraft-1.20.4-success)](https://minecraft.net/) [![](http://cf.way2muchnoise.eu/full_446813_downloads.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow)
 
 <p align="center"><img align="center" style="width:10%; height:10%;" src="logo.png" alt="Better Snowier Snow Logo"/></p>
 

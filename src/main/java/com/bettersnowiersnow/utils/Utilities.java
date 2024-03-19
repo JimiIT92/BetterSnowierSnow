@@ -23,6 +23,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -479,9 +480,15 @@ public class Utilities {
      */
     public static void decreaseSnowLayersFromMelting(Block block, Snow snow, int amount) {
         if(canMoreLayersBeMelted(snow)) {
-            snow.setLayers(snow.getLayers() - amount);
-            block.setBlockData(snow);
-            Bukkit.getPluginManager().callEvent(new BlockFormEvent(block, block.getState()));
+            int layers = snow.getLayers() - amount;
+            if(layers == 0) {
+                Logger.getAnonymousLogger().info("PLACING AIR");
+                block.getWorld().setBlockData(block.getLocation(), Material.AIR.createBlockData());
+            } else {
+                snow.setLayers(layers);
+                block.setBlockData(snow);
+                Bukkit.getPluginManager().callEvent(new BlockFormEvent(block, block.getState()));
+            }
         }
     }
 
