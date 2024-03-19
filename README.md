@@ -78,6 +78,8 @@ All credits go to **hobblyhobo** for creating the [Snowier Snow plugin](https://
 This plugin is amazing, however I felt like some features were missing. Also, some might not like how the snow poses in his plugin,
 so that's why this uses a different approach (that leads to smoother snow formations).
 
+Also thanks to [TRUEC0DER](https://github.com/TRUEC0DER) for addressing [an issue with the SnowMelt Event](https://github.com/JimiIT92/BetterSnowierSnow/pull/3) that makes any block prevents from disappearing
+
 # 😁 In conclusion
 
 I hope you like Better Snowier Snow and make it grow! Peace! 😁
