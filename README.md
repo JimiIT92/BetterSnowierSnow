@@ -18,16 +18,15 @@ For instance, you can give them gravity, so they will fall when the block below 
 # ⚙ Configuring
 The configuration file allows you to configure different aspects of the plugin
 
-**snowPoseMaxLayers**: The maximum number of snow layers that will be posed when snowing
+**snowGravity**: Enable gravity features for snow layers and snow blocks
 
-**snowPoseBlocks**: On how many blocks snow layers can be posed every tick while snowing
+**noMeltInColdBiomes**: If true, snow won't melt in cold biomes
 
-**snowPoseWorlds**: List of worlds where the plugin has effect
+**meltAboveLightLevel**: The minimum light level at which snow will melt
 
-**snowPoseIgnoredChunks**: List of chunk rectangular regions where the plugin won't have effect.
-The string syntax is the following: **&lt;start chunk x&gt;,&lt;start chunk y&gt;,&lt;end chunk x&gt;,&lt;end chunk y&gt;,&lt;prevent also vanilla layer from posing&gt;**
+**noSnowyGrassDecay**: If true, snowy grass won't decay
 
-To add just one chunk to the list just set both start chunk and end chunk coordinates to the same
+**noSnowyGrassSpread**: If true, grass won't spread if is snowy
 
 **slownessOnSnow**: If true, players will get the slowness effect while walking on snow blocks or layers
 
@@ -36,6 +35,25 @@ To add just one chunk to the list just set both start chunk and end chunk coordi
 **slownessStrength**: The slowness level the player will get
 
 **slownessSneakingPrevent**: If true, players won't get the slowness effect (if active) when they are sneaking
+
+**snowChancePercentage**: The chance of snow layers to be posed
+
+**snowPoseFrequency**: How often snow should be placed while snowing
+
+**snowPoseWorlds**: List of worlds where the plugin has effect
+
+**snowPoseMaxLayers**: The maximum number of snow layers that will be posed when snowing
+
+**snowPoseBlocks**: On how many blocks snow layers can be posed every tick while snowing
+
+**snowPoseIgnoredChunks**: List of chunk rectangular regions where the plugin won't have effect.
+The string syntax is the following: **&lt;start chunk x&gt;,&lt;start chunk y&gt;,&lt;end chunk x&gt;,&lt;end chunk y&gt;,&lt;prevent also vanilla layer from posing&gt;**
+
+To add just one chunk to the list just set both start chunk and end chunk coordinates to the same
+
+**snowMeltPercentage**: The chance of snow to be melt
+
+**snowMeltPercentage**: The minimum amount of snow layers that can be left after melting
 
 **metrics**: Enable [bStats metrics](https://bstats.org/plugin/bukkit/Better%20Snowier%20Snow/9912). This **does not collect any personal/sensitive information**. If enabled you need [bStats](https://bstats.org/) installed
 
