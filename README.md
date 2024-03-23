@@ -53,7 +53,7 @@ To add just one chunk to the list just set both start chunk and end chunk coordi
 
 **snowMeltPercentage**: The chance of snow to be melt
 
-**snowMeltPercentage**: The minimum amount of snow layers that can be left after melting
+**snowMeltMinLayers**: The minimum amount of snow layers that can be left after melting
 
 **metrics**: Enable [bStats metrics](https://bstats.org/plugin/bukkit/Better%20Snowier%20Snow/9912). This **does not collect any personal/sensitive information**. If enabled you need [bStats](https://bstats.org/) installed
 
