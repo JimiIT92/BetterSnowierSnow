@@ -42,7 +42,7 @@ public class SnowSlownessEvent implements Listener {
             }
         }
         if(applySlowness) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, Math.max(0, Settings.slownessStrength - 1), false, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, Math.max(0, Settings.slownessStrength - 1), false, false, false));
         }
     }
 }
