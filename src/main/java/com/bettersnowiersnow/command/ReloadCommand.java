@@ -5,8 +5,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import javax.annotation.Nonnull;
-
 /**
  * Reload the configuration
  */
@@ -22,7 +20,7 @@ public class ReloadCommand implements CommandExecutor {
      * @return {@link Boolean True}
      */
     @Override
-    public boolean onCommand(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
         BetterSnowierSnow.getInstance().reloadConfig();
         return true;
     }
