@@ -1,7 +1,7 @@
 name: BetterSnowierSnow
 version: ${project.version}
 main: com.bettersnowiersnow.BetterSnowierSnow
-api-version: 1.13
+api-version: 1.21.11
 load: POSTWORLD
 prefix: BetterSnowierSnow
 authors: [ JimiIT922 ]
