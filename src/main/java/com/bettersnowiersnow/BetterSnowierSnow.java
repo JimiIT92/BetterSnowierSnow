@@ -60,6 +60,12 @@ public final class BetterSnowierSnow extends JavaPlugin {
                 task.cancel();
             });
         }
+        if(Settings.snowMeltTasks != null) {
+            Settings.snowMeltTasks.values().forEach(task -> {
+                Bukkit.getScheduler().cancelTask(task.getTaskId());
+                task.cancel();
+            });
+        }
     }
 
     /**
@@ -90,8 +96,11 @@ public final class BetterSnowierSnow extends JavaPlugin {
      */
     private void registerTasks() {
         getServer().getWorlds().stream()
-                .filter(world -> Utilities.getLoadedChunks().stream().anyMatch(chunk -> chunk.getWorld().getName().equalsIgnoreCase(world.getName())))
+                .filter(world -> Utilities.getLoadedChunks(true).stream().anyMatch(chunk -> chunk.getWorld().getName().equalsIgnoreCase(world.getName())))
                 .forEach(world -> Utilities.runSnowPoseTaskForWorld(world.getName()));
+        getServer().getWorlds().stream()
+                .filter(world -> Utilities.getLoadedChunks(false).stream().anyMatch(chunk -> chunk.getWorld().getName().equalsIgnoreCase(world.getName())))
+                .forEach(world -> Utilities.runSnowMeltTaskForWorld(world.getName()));
     }
 
     /**

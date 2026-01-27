@@ -6,7 +6,7 @@
 
     <groupId>com.bettersnowiersnow</groupId>
     <artifactId>BetterSnowierSnow</artifactId>
-    <version>1.4.6-1.21.11</version>
+    <version>1.5-1.21.11</version>
     <packaging>jar</packaging>
 
     <name>BetterSnowierSnow</name>

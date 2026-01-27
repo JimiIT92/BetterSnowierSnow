@@ -45,7 +45,9 @@ public class SnowPoseEvent implements Listener {
             String world = event.getWorld().getName();
             if(event.toWeatherState()) {
                 Utilities.runSnowPoseTaskForWorld(world);
+                Utilities.cancelSnowMeltTaskForWorld(world);
             } else {
+                Utilities.runSnowMeltTaskForWorld(world);
                 Utilities.cancelSnowPoseTaskForWorld(world);
             }
         }
@@ -61,8 +63,13 @@ public class SnowPoseEvent implements Listener {
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
         World world = event.getPlayer().getWorld();
-        if(Utilities.isValidWorld(world) && !Settings.snowPoseTasks.containsKey(world.getName())) {
-            Utilities.runSnowPoseTaskForWorld(world.getName());
+        if(Utilities.isValidWorld(world)) {
+            if(world.hasStorm() && !Settings.snowPoseTasks.containsKey(world.getName())) {
+                Utilities.runSnowPoseTaskForWorld(world.getName());
+            }
+            if(!world.hasStorm() && !Settings.snowMeltTasks.containsKey(world.getName())) {
+                Utilities.runSnowMeltTaskForWorld(world.getName());
+            }
         }
     }
 
@@ -77,6 +84,8 @@ public class SnowPoseEvent implements Listener {
         if(Bukkit.getOnlinePlayers().size() - 1 == 0) {
             Settings.snowPoseTasks.forEach((world, bukkitTask) -> Utilities.cancelSnowPoseTaskForWorld(world));
             Settings.snowPoseTasks.clear();
+            Settings.snowMeltTasks.forEach((world, bukkitTask) -> Utilities.cancelSnowMeltTaskForWorld(world));
+            Settings.snowMeltTasks.clear();
         }
     }
 }

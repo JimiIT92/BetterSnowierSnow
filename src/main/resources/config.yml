@@ -30,6 +30,12 @@ snowChancePercentage: 0.0625
 # WARNING: setting this to a really lower value
 # may be memory consuming and cause lag
 snowPoseFrequency: 20
+# How often the snow could melt.
+# Higher values will make it slower.
+# Lower values will make it faster.
+# WARNING: setting this to a really lower value
+# may be memory consuming and cause lag
+snowMeltFrequency: 20
 # The maximum amount of snow layers
 # that can be naturally posed by snowing.
 # Values above 7 will be ignored and 7 will
@@ -55,7 +61,7 @@ snowPoseWorlds:
 snowPoseIgnoredChunks:
   - 0,0,0,0,false
 # Add a slowness effect to players walking on snow
-# blocks or snow layers. For layers you can set the
+# blocks or snow layers. For layers, you can set the
 # minimum amount for which the effect will be applied.
 # For instance, if setting to 2, players walking on
 # a single snow layer won't get the effect.

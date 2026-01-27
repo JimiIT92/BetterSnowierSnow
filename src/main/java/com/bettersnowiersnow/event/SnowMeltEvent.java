@@ -1,6 +1,5 @@
 package com.bettersnowiersnow.event;
 
-import com.bettersnowiersnow.config.Settings;
 import com.bettersnowiersnow.utils.Utilities;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Snow;
@@ -25,7 +24,7 @@ public class SnowMeltEvent implements Listener {
         Block block = event.getBlock();
         if(Utilities.isSnowBlockOrLayer(block)) {
             event.setCancelled(true);
-            if ((Settings.noMeltInColdBiomes && Utilities.isInColdBiome(block)) || Utilities.isBelowMinimumLightLevel(block)) {
+            if (Utilities.shouldNotMeltSnowLayer(block)) {
                 return;
             }
             if(Utilities.shouldMeltSnow() && Utilities.isSnowLayer(block)) {

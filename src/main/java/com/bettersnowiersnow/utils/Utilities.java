@@ -3,6 +3,7 @@ package com.bettersnowiersnow.utils;
 import com.bettersnowiersnow.BetterSnowierSnow;
 import com.bettersnowiersnow.config.ExcludedChunk;
 import com.bettersnowiersnow.config.Settings;
+import com.bettersnowiersnow.task.SnowMeltTask;
 import com.bettersnowiersnow.task.SnowPoseTask;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
@@ -415,7 +416,8 @@ public class Utilities {
      * @return True if the Light Level is below the minimum Light Level set, False otherwise
      */
     public static boolean isBelowMinimumLightLevel(Block block) {
-        return block.getLightFromBlocks() <= Settings.meltAboveLightLevel;
+        return block.getLightFromBlocks() >= Settings.meltAboveLightLevel ||
+                block.getLightFromSky() >= Settings.meltAboveLightLevel;
     }
 
     /**
@@ -505,13 +507,14 @@ public class Utilities {
     /**
      * Get the Loaded Chunks for snow pose
      *
+     * @param forSnowPose {@link Boolean Whether the chunk list is for the Snow Pose task}
      * @return Loaded Chunks
      */
-    public static Set<Chunk> getLoadedChunks() {
+    public static Set<Chunk> getLoadedChunks(final boolean forSnowPose) {
         final int viewDistance = Math.min(Bukkit.getViewDistance(), 7);
         Set<Chunk> chunkSet = new HashSet<>();
         Bukkit.getOnlinePlayers().stream()
-                .filter(player -> isValidWorld(player.getWorld()))
+                .filter(player -> isValidWorld(player.getWorld()) && (!forSnowPose || player.getWorld().hasStorm()))
                 .map(player -> player.getLocation().getChunk())
                 .filter(chunk -> !Utilities.isChunkExcluded(chunk))
                 .forEach(chunk -> {
@@ -534,8 +537,7 @@ public class Utilities {
      */
     public static boolean isValidWorld(World world) {
         return Settings.snowPoseWorlds.contains(world.getName())
-                && world.getEnvironment() == World.Environment.NORMAL
-                && world.hasStorm();
+                && world.getEnvironment() == World.Environment.NORMAL;
     }
 
     /**
@@ -550,12 +552,36 @@ public class Utilities {
     }
 
     /**
+     * Run a snow melt task for a World
+     *
+     * @param world World name
+     */
+    public static void runSnowMeltTaskForWorld(String world) {
+        BukkitTask task = Bukkit.getScheduler().runTaskTimer(BetterSnowierSnow.getInstance(), new SnowMeltTask(), Settings.snowMeltFrequency, Settings.snowMeltFrequency);
+        cancelSnowMeltTaskForWorld(world);
+        Settings.snowMeltTasks.put(world, task);
+    }
+
+    /**
      * Cancel a snow pose task for a World
      *
      * @param world World name
      */
     public static void cancelSnowPoseTaskForWorld(String world) {
         BukkitTask task = Settings.snowPoseTasks.getOrDefault(world, null);
+        if(task != null) {
+            task.cancel();
+            Bukkit.getScheduler().cancelTask(task.getTaskId());
+        }
+    }
+
+    /**
+     * Cancel a snow melt task for a World
+     *
+     * @param world World name
+     */
+    public static void cancelSnowMeltTaskForWorld(String world) {
+        BukkitTask task = Settings.snowMeltTasks.getOrDefault(world, null);
         if(task != null) {
             task.cancel();
             Bukkit.getScheduler().cancelTask(task.getTaskId());
@@ -578,6 +604,16 @@ public class Utilities {
      */
     public static boolean shouldMeltSnow() {
         return RANDOM.nextFloat() <= Settings.snowMeltPercentage;
+    }
+
+    /**
+     * Check if Snow Layer could be melted
+     *
+     * @param block The Snow Layer that could be melted
+     * @return True if snow could be melted, False otherwise
+     */
+    public static boolean shouldNotMeltSnowLayer(Block block) {
+        return (Settings.noMeltInColdBiomes && Utilities.isInColdBiome(block)) || !Utilities.isBelowMinimumLightLevel(block);
     }
 
     /**

@@ -4,10 +4,7 @@ import com.bettersnowiersnow.BetterSnowierSnow;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Plugin Settings
@@ -68,6 +65,10 @@ public class Settings {
      */
     public static int snowPoseFrequency;
     /**
+     * How often the plugin will try to melt the snow
+     */
+    public static int snowMeltFrequency;
+    /**
      * Worlds where snow will be posed by strategies
      */
     public static List<String> snowPoseWorlds;
@@ -99,39 +100,46 @@ public class Settings {
      * Snow Pose Tasks
      */
     public static HashMap<String, BukkitTask> snowPoseTasks = new HashMap<>();
+    /**
+     * Snow Melt Tasks
+     */
+    public static HashMap<String, BukkitTask> snowMeltTasks = new HashMap<>();
 
     /**
      * Load configuration
      */
     public static void load() {
         CONFIG = BetterSnowierSnow.getInstance().getConfig();
-        snowGravity = getBoolean("snowGravity");
-        noMeltInColdBiomes = getBoolean("noMeltInColdBiomes");
-        meltAboveLightLevel = Math.min(Math.max(0, getInt("meltAboveLightLevel")), 15);
-        noSnowyGrassDecay = getBoolean("noSnowyGrassDecay");
-        noSnowyGrassSpread = getBoolean("noSnowyGrassSpread");
-        slownessOnSnow = getBoolean("slownessOnSnow");
-        slownessMinLayers = Math.min(7, Math.max(0, getInt("slownessMinLayers")));
-        slownessStrength = getInt("slownessStrength");
-        slownessSneakingPrevent = getBoolean("slownessSneakingPrevent");
-        snowChancePercentage = getDouble("snowChancePercentage");
-        snowPoseFrequency = getInt("snowPoseFrequency");
-        snowPoseWorlds = getStringList("snowPoseWorlds");
-        snowPoseMaxLayers = Math.min(7, Math.max(0, getInt("snowPoseMaxLayers")));
-        snowPoseBlocks = Math.min(Math.max(0, getInt("snowPoseBlocks")), 256);
+        snowGravity = getBoolean("snowGravity", true);
+        noMeltInColdBiomes = getBoolean("noMeltInColdBiomes", true);
+        meltAboveLightLevel = Math.min(Math.max(0, getInt("meltAboveLightLevel", 10)), 15);
+        noSnowyGrassDecay = getBoolean("noSnowyGrassDecay", true);
+        noSnowyGrassSpread = getBoolean("noSnowyGrassSpread", true);
+        snowChancePercentage = getDouble("snowChancePercentage", 0.0625D);
+        snowPoseFrequency = getInt("snowPoseFrequency", 20);
+        snowMeltFrequency = getInt("snowMeltFrequency", 20);
+        snowPoseMaxLayers = Math.min(7, Math.max(0, getInt("snowPoseMaxLayers", 4)));
+        snowPoseBlocks = Math.min(Math.max(0, getInt("snowPoseBlocks", 1)), 256);
+        snowPoseWorlds = getStringList("snowPoseWorlds", Collections.singletonList("world"));
         excludedChunks = getExcludedChunks();
-        snowMeltPercentage = getDouble("snowMeltPercentage");
-        snowMeltMinLayers = Math.max(0, Math.min(7, getInt("snowMeltMinLayers")));
-        metrics = getBoolean("metrics");
+        slownessOnSnow = getBoolean("slownessOnSnow", true);
+        slownessMinLayers = Math.min(7, Math.max(0, getInt("slownessMinLayers", 1)));
+        slownessStrength = getInt("slownessStrength", 1);
+        slownessSneakingPrevent = getBoolean("slownessSneakingPrevent", false);
+        metrics = getBoolean("metrics", false);
+        snowMeltPercentage = getDouble("snowMeltPercentage", 0.0625D);
+        snowMeltMinLayers = Math.max(0, Math.min(7, getInt("snowMeltMinLayers", 1)));
     }
 
     /**
      * Get a boolean value from the Configuration
      *
      * @param key Config Key
+     * @param defaultValue The default value if not found
      * @return Boolean Value
      */
-    private static boolean getBoolean(String key) {
+    private static boolean getBoolean(String key, boolean defaultValue) {
+        setDefault(key, defaultValue);
         return CONFIG.getBoolean(key);
     }
 
@@ -139,9 +147,11 @@ public class Settings {
      * Get an integer value from the Configuration
      *
      * @param key Config Key
+     * @param defaultValue The default value if not found
      * @return Integer Value
      */
-    private static int getInt(String key) {
+    private static int getInt(String key, int defaultValue) {
+        setDefault(key, defaultValue);
         return CONFIG.getInt(key);
     }
 
@@ -149,19 +159,35 @@ public class Settings {
      * Get a double value from the Configuration
      *
      * @param key Config Key
+     * @param defaultValue The default value if not found
      * @return Double Value
      */
-    private static double getDouble(String key) {
+    private static double getDouble(String key, double defaultValue) {
+        setDefault(key, defaultValue);
         return CONFIG.getDouble(key);
+    }
+
+    /**
+     * Set the default value of a configuration if not found
+     *
+     * @param key Config Key
+     * @param defaultValue The default value if not found
+     */
+    private static void setDefault(String key, Object defaultValue) {
+        if(!CONFIG.contains(key)) {
+            CONFIG.set(key, defaultValue);
+        }
     }
 
     /**
      * Get a string list value from the Configuration
      *
      * @param key Config Key
+     * @param defaultValue The default value if not found
      * @return String value
      */
-    private static List<String> getStringList(String key) {
+    private static List<String> getStringList(String key, List<String> defaultValue) {
+        setDefault(key, defaultValue);
         return CONFIG.getStringList(key);
     }
 
@@ -172,7 +198,7 @@ public class Settings {
      */
     private static Set<ExcludedChunk> getExcludedChunks() {
         excludedChunks = new HashSet<>();
-        getStringList("snowPoseIgnoredChunks").forEach(chunk -> {
+        getStringList("snowPoseIgnoredChunks", Collections.singletonList("0,0,0,0,false")).forEach(chunk -> {
             String[] splitChunk = chunk.split(",");
             int fromX = Integer.parseInt(splitChunk[0]);
             int fromZ = Integer.parseInt(splitChunk[1]);

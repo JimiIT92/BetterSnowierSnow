@@ -1,4 +1,4 @@
-# ❄ BetterSnowierSnow ![](https://img.shields.io/badge/Release-1.4.5-yellow) [![](https://img.shields.io/badge/Minecraft-1.21.10-success)](https://minecraft.net/) [![](http://cf.way2muchnoise.eu/full_446813_downloads.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow) [![](https://img.shields.io/modrinth/dt/E1q92r8V?logo=modrinth&label=Modrinth&color=darkgreen)](https://modrinth.com/plugin/better-snowier-snow)
+# ❄ BetterSnowierSnow ![](https://img.shields.io/badge/Release-1.5-yellow) [![](https://img.shields.io/badge/Minecraft-1.21.11-success)](https://minecraft.net/) [![](http://cf.way2muchnoise.eu/full_446813_downloads.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow) [![](https://img.shields.io/modrinth/dt/E1q92r8V?logo=modrinth&label=Modrinth&color=darkgreen)](https://modrinth.com/plugin/better-snowier-snow)
 
 
 
