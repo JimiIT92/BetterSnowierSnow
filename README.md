@@ -1,4 +1,4 @@
-# ❄ BetterSnowierSnow ![](https://img.shields.io/badge/Release-1.5-yellow) [![](https://img.shields.io/badge/Minecraft-1.21.11-success)](https://minecraft.net/) [![](http://cf.way2muchnoise.eu/full_446813_downloads.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow) [![](https://img.shields.io/modrinth/dt/E1q92r8V?logo=modrinth&label=Modrinth&color=darkgreen)](https://modrinth.com/plugin/better-snowier-snow)
+# ❄ BetterSnowierSnow ![](https://img.shields.io/badge/Release-1.6-yellow) [![](https://img.shields.io/badge/Minecraft-26.1.2-success)](https://minecraft.net/) [![](http://cf.way2muchnoise.eu/full_446813_downloads.svg)](https://www.curseforge.com/minecraft/bukkit-plugins/better-snowier-snow) [![](https://img.shields.io/modrinth/dt/E1q92r8V?logo=modrinth&label=Modrinth&color=darkgreen)](https://modrinth.com/plugin/better-snowier-snow)
 
 
 
@@ -12,7 +12,7 @@ This plugin is inspired by the [Snowier Snow plugin by hobblyhobo](https://www.s
 his plugin as well!
 
 # 🔧 How it works
-Better Snowier Snow provides a simple configuration tool that allows you to change the behaviour of Powder Snow, Snow Blocks and Snow Layers, to make them act more realistically.
+Better Snowier Snow provides a simple configuration tool that allows you to change the behavior of Powder Snow, Snow Blocks and Snow Layers, to make them act more realistically.
 For instance, you can give them gravity, so they will fall when the block below is broken, or you can make them stack up when it's snowing!
 
 # ⚙ Configuring
