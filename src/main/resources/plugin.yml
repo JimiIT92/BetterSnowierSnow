@@ -1,10 +1,10 @@
 name: BetterSnowierSnow
 version: ${project.version}
 main: com.bettersnowiersnow.BetterSnowierSnow
-api-version: 26.2
+api-version: 26.3
 load: POSTWORLD
 prefix: BetterSnowierSnow
-authors: [ JimiIT922 ]
+authors: [ JimiIT92 ]
 description: Make snow act more realistically! Inspired by the Snowier Snow plugin by hobblyhobo
 website: https://github.com/JimiIT92/BetterSnowierSnow
 commands:
